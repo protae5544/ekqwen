@@ -229,9 +229,9 @@
       const currentUrl = window.location.href;
       const baseUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/') + 1);
       const workerPageUrl = `${baseUrl}worker.html?id=${encodeURIComponent(worker.requestNumber || '')}`;
-      // สร้าง URL สำหรับดาวน์โหลด PDF จาก Supabase ผ่านโดเมนปัจจุบัน
+      // สร้าง URL สำหรับดาวน์โหลด PDF ผ่าน Netlify Functions
       const currentDomain = window.location.origin;
-      const receiptUrl = `${currentDomain}/pdf.html?id=${encodeURIComponent(worker.requestNumber || '')}`;
+      const receiptUrl = `${currentDomain}/.netlify/functions/download-pdf?id=${encodeURIComponent(worker.requestNumber || '')}`;
       const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&ecc=H&data=${encodeURIComponent(workerPageUrl)}`;
       const receiptQrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&ecc=H&data=${encodeURIComponent(receiptUrl)}`;
       const defaultQrCodeSrc = 'https://via.placeholder.com/69?text=No+QR';
