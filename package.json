@@ -1,0 +1,23 @@
+{
+  "name": "worker-permit-system",
+  "version": "1.0.0",
+  "description": "Worker permit system with PDF download via QR code",
+  "main": "index.js",
+  "scripts": {
+    "build": "echo 'Static site - no build needed'",
+    "dev": "netlify dev",
+    "start": "netlify dev"
+  },
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.0.0"
+  },
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
