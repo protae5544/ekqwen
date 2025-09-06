@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const puppeteer = require('puppeteer')
 
 exports.handler = async (event, context) => {
   try {
@@ -14,7 +15,47 @@ exports.handler = async (event, context) => {
         body: JSON.stringify({ error: 'Missing id parameter' })
       }
     }
-
+    
+    // เพิ่มส่วนตรวจสอบ User-Agent
+    const userAgent = event.headers['user-agent'] || ''
+    const isLineApp = /Line\//i.test(userAgent)
+    const isAndroid = /Android/i.test(userAgent)
+    
+    // สร้าง URL สำหรับเปิดใน browser ภายนอก
+    const currentDomain = event.headers.host || 'localhost'
+    const protocol = event.headers['x-forwarded-proto'] || 'https'
+    const externalUrl = `${protocol}://${currentDomain}/.netlify/functions/download-pdf?id=${encodeURIComponent(id)}&force_external=1`
+    
+    // กรณีใช้งานใน LINE Android ให้ redirect ออกไป browser ภายนอก
+    if (isLineApp && isAndroid && !event.queryStringParameters.force_external) {
+      return {
+        statusCode: 200,
+        headers: {
+          'Content-Type': 'text/html; charset=utf-8',
+        },
+        body: `
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="UTF-8">
+            <title>Redirecting...</title>
+            <style>
+              body { font-family: 'THSarabunNew', sans-serif; text-align: center; margin-top: 50px; }
+            </style>
+          </head>
+          <body>
+            <p>กำลังเปิดเบราว์เซอร์ภายนอก...</p>
+            <script>
+              setTimeout(function() {
+                window.location.href = 'line://externalBrowser/?url=${encodeURIComponent(externalUrl)}';
+              }, 100);
+            </script>
+          </body>
+          </html>
+        `
+      }
+    }
+    
     // อ่านข้อมูลจาก combined-data.json
     const dataPath = path.join(process.cwd(), 'combined-data.json')
     let workerData
@@ -32,7 +73,7 @@ exports.handler = async (event, context) => {
         body: JSON.stringify({ error: 'Failed to read worker data' })
       }
     }
-
+    
     if (!workerData) {
       return {
         statusCode: 404,
@@ -42,19 +83,7 @@ exports.handler = async (event, context) => {
         body: JSON.stringify({ error: `Worker with ID ${id} not found` })
       }
     }
-
-    // สร้าง HTML สำหรับ PDF
-    const getCurrentTimestamp = () => {
-      const now = new Date()
-      return now.toLocaleString('th-TH', {
-        day: '2-digit', month: '2-digit', year: 'numeric',
-        hour: '2-digit', minute: '2-digit', hour12: false
-      }).replace(',', ' น.')
-    }
-
-    const timestamp = getCurrentTimestamp()
-    const receiptTimestamp = `เอกสารอิเล็กทรอนิกส์ฉบับนี้ถูกสร้างจากระบบอนุญาตทำงานคนต่างด้าวที่มีสถานะการทำงานไม่ถูกต้องตามกฎหมาย ตามมติคณะรัฐมนตรีเมื่อวันที่ 24 กันยายน 2567<br/>โดยกรมการจัดหางาน กระทรวงแรงงาน<br/>พิมพ์เอกสาร วันที่ ${timestamp}`
-
+    
     // อ่าน background image
     const bg2Path = path.join(process.cwd(), 'bg2.svg')
     let bg2Content = ''
@@ -63,25 +92,41 @@ exports.handler = async (event, context) => {
     } catch (err) {
       console.log('Could not read bg2.svg')
     }
-
+    
+    // อ่านไฟล์ฟอนต์และแปลงเป็น base64
+    const fontNormalPath = path.join(process.cwd(), 'THSarabunNew.ttf')
+    const fontBoldPath = path.join(process.cwd(), 'THSarabunNew Bold.ttf')
+    
+    let fontNormalBase64 = ''
+    let fontBoldBase64 = ''
+    
+    try {
+      fontNormalBase64 = fs.readFileSync(fontNormalPath, 'base64')
+      fontBoldBase64 = fs.readFileSync(fontBoldPath, 'base64')
+    } catch (err) {
+      console.log('Could not read font files, using fallback fonts')
+    }
+    
     // สร้าง QR Code URL
-    const currentDomain = event.headers.host || 'localhost'
-    const protocol = event.headers['x-forwarded-proto'] || 'https'
     const receiptUrl = `${protocol}://${currentDomain}/.netlify/functions/download-pdf?id=${encodeURIComponent(workerData.requestNumber || '')}`
     const receiptQrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&ecc=H&data=${encodeURIComponent(receiptUrl)}`
-
-    const htmlContent = `
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="th" xml:lang="th">
-<head>
-  <title>PDF Download</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  <style type="text/css">
+    
+    // สร้าง timestamp
+    const getCurrentTimestamp = () => {
+      const now = new Date()
+      return now.toLocaleString('th-TH', {
+        day: '2-digit', month: '2-digit', year: 'numeric',
+        hour: '2-digit', minute: '2-digit', hour12: false
+      }).replace(',', ' น.')
+    }
+    const timestamp = getCurrentTimestamp()
+    const receiptTimestamp = `เอกสารอิเล็กทรอนิกส์ฉบับนี้ถูกสร้างจากระบบอนุญาตทำงานคนต่างด้าวที่มีสถานะการทำงานไม่ถูกต้องตามกฎหมาย ตามมติคณะรัฐมนตรีเมื่อวันที่ 24 กันยายน 2567<br/>โดยกรมการจัดหางาน กระทรวงแรงงาน<br/>พิมพ์เอกสาร วันที่ ${timestamp}`
+    
+    // สร้าง CSS ที่มีฟอนต์ฝังอยู่ (ใช้ไฟล์ ttf)
+    const cssContent = `
 @font-face {
     font-family: 'THSarabunPsk';
-    src: url('https://oldqifkvaagtseibueaf.supabase.co/storage/v1/object/public/zzoo/ozz/ss-thsbn.woff2') format('woff2');
+    src: url('data:font/truetype;base64,${fontNormalBase64}') format('truetype');
     font-weight: normal;
     font-style: normal;
     unicode-range: U+0E00-0E7F, U+0020-007F, U+00A0-00FF;
@@ -89,7 +134,7 @@ exports.handler = async (event, context) => {
 }
 @font-face {
     font-family: 'THSarabunPsk';
-    src: url('https://oldqifkvaagtseibueaf.supabase.co/storage/v1/object/public/zzoo/ozz/ss-thsbn-bold.woff2') format('woff2');
+    src: url('data:font/truetype;base64,${fontBoldBase64}') format('truetype');
     font-weight: bold;
     font-style: normal;
     unicode-range: U+0E00-0E7F, U+0020-007F, U+00A0-00FF;
@@ -99,87 +144,45 @@ exports.handler = async (event, context) => {
     text-shadow: 0 1px 0 rgba(0,0,0,0.15), 0 2px 1px rgba(0,0,0,0.08) !important;
     -webkit-text-stroke: 0.05px currentColor !important;
 }
-.ft00{font-size:20px;font-family:'THSarabunPsk';color:#000000;}
-.ft01{font-size:25px;font-family:'THSarabunPsk';color:#000000;}
-.ft02{font-size:22px;font-family:'THSarabunPsk';color:#000000;}
-.ft03{font-size:22px;font-family:'THSarabunPsk';color:#000000;}
-.ft04{font-size:15px;font-family:'THSarabunPsk';color:#000000;}
-.ft06{font-size:15px;line-height:17px;font-family:'THSarabunPsk';color:#000000;}
+.ft00{font-size:20px;font-family:'THSarabunPsk', sans-serif;color:#000000;}
+.ft01{font-size:25px;font-family:'THSarabunPsk', sans-serif;color:#000000;}
+.ft02{font-size:22px;font-family:'THSarabunPsk', sans-serif;color:#000000;}
+.ft03{font-size:22px;font-family:'THSarabunPsk', sans-serif;color:#000000;}
+.ft04{font-size:15px;font-family:'THSarabunPsk', sans-serif;color:#000000;}
+.ft06{font-size:15px;line-height:17px;font-family:'THSarabunPsk', sans-serif;color:#000000;}
+body {
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  font-family: 'THSarabunPsk', sans-serif;
+}
+.page-div {
+  position: relative;
+  width: 892px;
+  height: 1261px;
+  font-family: 'THSarabunPsk', sans-serif;
+  color: #000000;
+  margin: 0 auto;
+  background: white;
+}
+`
+    
+    // สร้าง HTML template เหมือนเดิม
+    const htmlContent = `
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="th" xml:lang="th">
+<head>
+  <title>PDF Download</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <style type="text/css">
+${cssContent}
   </style>
-  <script>
-    window.onload = function() {
-      setTimeout(async function() {
-        try {
-          const page2Element = document.getElementById('page2-div');
-          
-          // Wait for images to load
-          const images = document.querySelectorAll('img');
-          await Promise.all(Array.from(images).map(img => {
-            return new Promise(resolve => {
-              if (img.complete) resolve();
-              else {
-                img.onload = resolve;
-                img.onerror = resolve;
-                setTimeout(resolve, 3000);
-              }
-            });
-          }));
-
-          const opt = {
-            margin: [0, 0, 0, 0],
-            filename: 'receipt-${workerData.requestNumber || 'unknown'}.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 3, useCORS: true, width: 892, height: 1261, scrollX: 0, scrollY: 0 },
-            jsPDF: { unit: 'px', format: [892, 1261], orientation: 'portrait', compress: true }
-          };
-
-          await html2pdf().set(opt).from(page2Element).save();
-          
-          // แสดงข้อความสำเร็จ
-          document.body.innerHTML = \`
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: 'THSarabunPsk', sans-serif; background: #f0f2f5;">
-              <div style="background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center;">
-                <h2 style="color: #27ae60; font-size: 28px; margin-bottom: 20px;">✓ ดาวน์โหลดสำเร็จ</h2>
-                <p style="font-size: 20px; margin-bottom: 20px;">ไฟล์ PDF ถูกดาวน์โหลดแล้ว</p>
-                <p style="font-size: 16px; color: #666; margin-bottom: 30px;">เลขที่คำขอ: ${workerData.requestNumber || 'N/A'}</p>
-                <button onclick="window.close()" style="padding: 12px 24px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 18px;">ปิดหน้าต่าง</button>
-              </div>
-            </div>
-          \`;
-          
-        } catch (error) {
-          console.error('Error generating PDF:', error);
-          document.body.innerHTML = \`
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: 'THSarabunPsk', sans-serif; background: #f0f2f5;">
-              <div style="background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center;">
-                <h2 style="color: #e74c3c; font-size: 28px; margin-bottom: 20px;">⚠ เกิดข้อผิดพลาด</h2>
-                <p style="font-size: 20px; margin-bottom: 20px;">ไม่สามารถสร้าง PDF ได้</p>
-                <p style="font-size: 16px; color: #666; margin-bottom: 30px;">กรุณาลองใหม่อีกครั้ง</p>
-                <button onclick="window.close()" style="padding: 12px 24px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 18px;">ปิดหน้าต่าง</button>
-              </div>
-            </div>
-          \`;
-        }
-      }, 2000);
-    };
-  </script>
 </head>
-<body class="bg-gray-500" style="margin: 0; padding: 0;">
-  <!-- Loading Screen -->
-  <div id="loading" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; color: white; font-family: 'THSarabunPsk', sans-serif;">
-    <div style="border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; margin-bottom: 20px;"></div>
-    <h2 style="font-size: 28px; margin-bottom: 10px;">กำลังเตรียม PDF...</h2>
-    <p style="font-size: 18px; text-align: center;">กรุณารอสักครู่ ระบบกำลังสร้างเอกสารให้คุณ</p>
-    <style>
-      @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    </style>
-  </div>
-
-  <!-- Page 2: Receipt -->
-  <div id="page2-div" class="page-div relative w-[892px] h-[1261px] font-['THSarabunPSK'] text-black mx-auto bg-white" style="margin: 0;">
+<body>
+  <div id="page2-div" class="page-div">
     <img width="892" height="1261" src="data:image/svg+xml;base64,${Buffer.from(bg2Content).toString('base64')}" alt="receipt background image"/>
     <!-- Receipt QR Code -->
-    <img class="absolute top-[925px] left-[120px] w-[90px] h-[90px] object-cover" src="${receiptQrCodeApiUrl}" alt="Receipt QR Code"/>
+    <img style="position:absolute;top:925px;left:120px;width:90px;height:90px;object-fit:cover" src="${receiptQrCodeApiUrl}" alt="Receipt QR Code"/>
     <!-- Department Info -->
     <p style="position:absolute;top:147px;left:86px;white-space:nowrap" class="ft00">กรมการจัดหางาน</p>
     <p style="position:absolute;top:170px;left:88px;white-space:nowrap" class="ft00">กระทรวงแรงงาน</p>
@@ -237,28 +240,150 @@ exports.handler = async (event, context) => {
 </body>
 </html>`
 
+    // ใช้ Puppeteer สร้าง PDF จาก HTML
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-accelerated-2d-canvas',
+        '--no-first-run',
+        '--no-zygote',
+        '--disable-gpu'
+      ]
+    })
+    
+    const page = await browser.newPage()
+    
+    // ตั้งค่า viewport ให้ตรงกับขนาด PDF
+    await page.setViewport({ width: 892, height: 1261 })
+    
+    // ตั้งค่า timeout ให้สูงขึ้นสำหรับการโหลดฟอนต์
+    await page.setDefaultNavigationTimeout(30000)
+    
+    await page.setContent(htmlContent, { 
+      waitUntil: 'networkidle0',
+      timeout: 30000
+    })
+    
+    // รอให้ภาพโหลดเสร็จ
+    try {
+      await page.waitForSelector('img', { timeout: 10000 })
+    } catch (e) {
+      console.log('Images not loaded, continuing anyway')
+    }
+    
+    // รอให้ฟอนต์โหลดเสร็จ
+    await page.evaluate(() => {
+      return new Promise((resolve) => {
+        setTimeout(resolve, 2000)
+      })
+    })
+    
+    // สร้าง PDF
+    const pdfBuffer = await page.pdf({
+      width: '892px',
+      height: '1261px',
+      printBackground: true,
+      margin: {
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0
+      },
+      preferCSSPageSize: true
+    })
+    
+    await browser.close()
+    
+    // ส่ง PDF กลับไปให้ client
     return {
       statusCode: 200,
       headers: {
-        'Content-Type': 'text/html; charset=utf-8',
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': `attachment; filename="receipt-${workerData.requestNumber || 'unknown'}.pdf"`,
         'Cache-Control': 'no-cache, no-store, must-revalidate',
         'Pragma': 'no-cache',
         'Expires': '0'
       },
-      body: htmlContent
+      body: pdfBuffer.toString('base64'),
+      isBase64Encoded: true
     }
-
+    
   } catch (error) {
-    console.error('Error in download-pdf function:', error)
+    // เพิ่มการบันทึก error log
+    console.error('ERROR:', {
+      timestamp: new Date().toISOString(),
+      userAgent: event.headers['user-agent'],
+      error: error.stack,
+      queryParams: event.queryStringParameters
+    })
+    
+    // กรณีเกิด error ให้แสดงหน้าแจ้งเตือน
     return {
-      statusCode: 500,
+      statusCode: 200,
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'text/html; charset=utf-8',
       },
-      body: JSON.stringify({ 
-        error: 'Internal server error',
-        message: error.message 
-      })
+      body: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="UTF-8">
+          <title>เกิดข้อผิดพลาด</title>
+          <style>
+            body { 
+              font-family: 'THSarabunNew', sans-serif; 
+              text-align: center; 
+              padding: 50px 20px; 
+              background: #f5f5f5;
+            }
+            .error-container {
+              background: white;
+              padding: 40px;
+              border-radius: 10px;
+              box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+              max-width: 500px;
+              margin: 0 auto;
+            }
+            .error-title {
+              color: #e74c3c;
+              font-size: 28px;
+              margin-bottom: 20px;
+            }
+            .error-message {
+              font-size: 18px;
+              margin-bottom: 30px;
+            }
+            .error-detail {
+              font-size: 14px;
+              color: #666;
+              margin-bottom: 30px;
+            }
+            .retry-button {
+              background: #3498db;
+              color: white;
+              border: none;
+              padding: 12px 24px;
+              border-radius: 5px;
+              cursor: pointer;
+              font-size: 16px;
+              text-decoration: none;
+              display: inline-block;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="error-container">
+            <h1 class="error-title">⚠️ เกิดข้อผิดพลาด</h1>
+            <p class="error-message">ไม่สามารถสร้างเอกสาร PDF ได้</p>
+            <p class="error-detail">กรุณาลองใหม่อีกครั้งหรือติดต่อ 02-123-4567</p>
+            <a href="${externalUrl}" class="retry-button">ลองใหม่</a>
+          </div>
+        </body>
+        </html>
+      `
     }
   }
 }
