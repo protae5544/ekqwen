@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head><title>ระบบนำเข้าข้อมูล</title></head>
+<body>
+<h2>เพิ่มข้อมูลพนักงาน</h2>
+<form>
+  <input type="text" placeholder="ชื่อ" name="name"><br>
+  <input type="text" placeholder="อีเมล" name="email"><br>
+  <input type="text" placeholder="ตำแหน่ง" name="position"><br>
+  <button type="submit">บันทึก</button>
+</form>
+<script>
+// เพิ่มหัวข้อใหม่แบบ dynamic
+const form = document.querySelector("form");
+const addField = (label) => {
+  const input = document.createElement("input");
+  input.placeholder = label;
+  form.insertBefore(input, form.lastElementChild);
+};
+</script>
+</body>
+</html>
