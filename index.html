@@ -1,22 +1,366 @@
 <!DOCTYPE html>
-<html>
-<head><title>ระบบนำเข้าข้อมูล</title></head>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foreign Worker Management System - ระบบจัดการคนต่างด้าว</title>
+    <style>
+        @font-face {
+            font-family: 'THSarabunPsk';
+            src: url('https://oldqifkvaagtseibueaf.supabase.co/storage/v1/object/public/zzoo/ozz/ss-thsbn.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            unicode-range: U+0E00-0E7F, U+0020-007F, U+00A0-00FF;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'THSarabunPsk';
+            src: url('https://oldqifkvaagtseibueaf.supabase.co/storage/v1/object/public/zzoo/ozz/ss-thsbn-bold.woff2') format('woff2');
+            font-weight: bold;
+            font-style: normal;
+            unicode-range: U+0E00-0E7F, U+0020-007F, U+00A0-00FF;
+            font-display: swap;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'THSarabunPsk', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        
+        .status {
+            display: inline-block;
+            background: #27ae60;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .card h3 {
+            font-size: 1.5em;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card .description {
+            color: #7f8c8d;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .card .features {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+        
+        .card .features li {
+            padding: 5px 0;
+            border-bottom: 1px solid #ecf0f1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .card .features li:last-child {
+            border-bottom: none;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(135deg, #2980b9, #21618c);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn.success {
+            background: linear-gradient(135deg, #27ae60, #229954);
+        }
+        
+        .btn.success:hover {
+            background: linear-gradient(135deg, #229954, #1e8449);
+        }
+        
+        .btn.warning {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+        
+        .btn.warning:hover {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+        }
+        
+        .monitoring {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .monitoring h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat .number {
+            font-size: 2em;
+            font-weight: bold;
+            display: block;
+        }
+        
+        .stat .label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        .footer {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .footer p {
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+        
+        .icon {
+            font-size: 1.2em;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn {
+                display: block;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
 <body>
-<h2>เพิ่มข้อมูลพนักงาน</h2>
-<form>
-  <input type="text" placeholder="ชื่อ" name="name"><br>
-  <input type="text" placeholder="อีเมล" name="email"><br>
-  <input type="text" placeholder="ตำแหน่ง" name="position"><br>
-  <button type="submit">บันทึก</button>
-</form>
-<script>
-// เพิ่มหัวข้อใหม่แบบ dynamic
-const form = document.querySelector("form");
-const addField = (label) => {
-  const input = document.createElement("input");
-  input.placeholder = label;
-  form.insertBefore(input, form.lastElementChild);
-};
-</script>
+    <div class="container">
+        <div class="header">
+            <h1>🏢 Foreign Worker Management System</h1>
+            <p>ระบบจัดการคนต่างด้าวและเอกสารใบอนุญาตทำงาน</p>
+            <span class="status">🚀 Production Ready</span>
+        </div>
+
+        <div class="monitoring">
+            <h3><span class="icon">📊</span> Project Monitoring</h3>
+            <div class="stats">
+                <div class="stat">
+                    <span class="number">7</span>
+                    <span class="label">HTML Files</span>
+                </div>
+                <div class="stat">
+                    <span class="number">4</span>
+                    <span class="label">SVG Templates</span>
+                </div>
+                <div class="stat">
+                    <span class="number">1</span>
+                    <span class="label">Data Files</span>
+                </div>
+                <div class="stat">
+                    <span class="number">131MB</span>
+                    <span class="label">Project Size</span>
+                </div>
+            </div>
+            <a href="monitor-dashboard.html" class="btn">📈 View Monitoring Dashboard</a>
+            <a href="PROJECT_SUMMARY.md" class="btn warning">📋 View Project Summary</a>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h3><span class="icon">📄</span> Production System</h3>
+                <p class="description">ระบบหลักสำหรับใช้งานจริง ดึงข้อมูลจาก JSON และสร้างเอกสารด้วย SVG Template</p>
+                <ul class="features">
+                    <li>✅ SVG Template System</li>
+                    <li>✅ Dynamic Data Binding</li>
+                    <li>✅ Thai Font Support</li>
+                    <li>✅ QR Code Generation</li>
+                    <li>✅ Professional Layout</li>
+                </ul>
+                <a href="main1-svg.html" class="btn success">🚀 Main Application</a>
+                <a href="test-complete-svg.html" class="btn">🧪 Test Templates</a>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">🔧</span> Development & Testing</h3>
+                <p class="description">เวอร์ชันพัฒนาและทดสอบสำหรับการแก้ไขปัญหาและปรับปรุงระบบ</p>
+                <ul class="features">
+                    <li>📝 Original HTML Version</li>
+                    <li>🧪 PDF Generation Test</li>
+                    <li>👤 Worker Data Display</li>
+                    <li>🔍 QR Code Testing</li>
+                </ul>
+                <a href="main1.html" class="btn">📝 Original Version</a>
+                <a href="pdf.html" class="btn">📄 PDF Test</a>
+                <a href="worker.html" class="btn">👤 Worker Data</a>
+                <a href="test-qr.html" class="btn">🔍 QR Test</a>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">📋</span> Reference Files</h3>
+                <p class="description">ไฟล์อ้างอิงสำหรับเปรียบเทียบและตรวจสอบข้อมูลต้นฉบับ</p>
+                <ul class="features">
+                    <li>📄 Complete Template Reference</li>
+                    <li>🏢 Company Information</li>
+                    <li>📋 Document Structure</li>
+                </ul>
+                <a href="main2/main2.html" class="btn">📋 Reference Template</a>
+                <a href="combined-data.json" class="btn warning">📊 View Data</a>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">🚀</span> Deployment</h3>
+                <p class="description">เตรียมพร้อมสำหรับการ Deploy ขึ้น Netlify และการใช้งานจริง</p>
+                <ul class="features">
+                    <li>☁️ Netlify Functions Ready</li>
+                    <li>📄 PDF Generation</li>
+                    <li>🔗 QR Code Links</li>
+                    <li>📱 Mobile Compatible</li>
+                </ul>
+                <a href="netlify/index.html" class="btn success">☁️ Netlify Config</a>
+                <a href="#" class="btn" onclick="alert('Ready for Netlify deployment!')">🚀 Deploy Now</a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Foreign Worker Management System</strong> - SVG Template Edition</p>
+            <p>Developed with ❤️ using HTML5, SVG Templates, and Thai Typography</p>
+            <p>📅 Last Updated: <span id="lastUpdated">Loading...</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Update timestamp
+        document.getElementById('lastUpdated').textContent = new Date().toLocaleString('th-TH');
+        
+        // Add some interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate stats on load
+            const stats = document.querySelectorAll('.stat .number');
+            stats.forEach(stat => {
+                const finalValue = stat.textContent;
+                stat.textContent = '0';
+                setTimeout(() => {
+                    stat.textContent = finalValue;
+                }, 500);
+            });
+            
+            // Add click tracking
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    if (!this.getAttribute('href') || this.getAttribute('href') === '#') {
+                        e.preventDefault();
+                        console.log('Button clicked:', this.textContent);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
