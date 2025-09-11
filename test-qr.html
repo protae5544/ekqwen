@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test QR Code System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'THSarabunPsk', sans-serif; padding: 20px; }
+        .qr-container { margin: 20px 0; }
+        .qr-code { border: 1px solid #ccc; padding: 10px; display: inline-block; }
+    </style>
+</head>
+<body>
+    <h1>ทดสอบระบบ QR Code สำหรับ Line App</h1>
+    
+    <div class="qr-container">
+        <h3>QR Code สำหรับ Worker: WP-68-1012026</h3>
+        <div class="qr-code">
+            <img id="testQR" src="" width="200" height="200">
+        </div>
+        <p>URL: <span id="testURL"></span></p>
+    </div>
+
+    <script>
+        // Test QR Code generation
+        const workerId = 'WP-68-1012026';
+        const serverPdfUrl = `/.netlify/functions/generate-pdf?workerId=${workerId}`;
+        const fullUrl = window.location.origin + serverPdfUrl;
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(fullUrl)}`;
+        
+        document.getElementById('testQR').src = qrUrl;
+        document.getElementById('testURL').textContent = fullUrl;
+        
+        console.log('QR Code URL:', qrUrl);
+        console.log('Server PDF URL:', fullUrl);
+    </script>
+</body>
+</html>

@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="th" xml:lang="th">
+<head>
+  <title>ระบบจัดการข้อมูลแรงงานต่างด้าว - Complete SVG Template</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- html2pdf library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style type="text/css">
+/* 1. ประกาศฟอนต์ก่อน */
+@font-face {
+    font-family: 'THSarabunPsk';
+    src: url('https://oldqifkvaagtseibueaf.supabase.co/storage/v1/object/public/zzoo/ozz/ss-thsbn.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+0E00-0E7F, U+0020-007F, U+00A0-00FF;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'THSarabunPsk';
+    src: url('https://oldqifkvaagtseibueaf.supabase.co/storage/v1/object/public/zzoo/ozz/ss-thsbn-bold.woff2') format('woff2');
+    font-weight: bold;
+    font-style: normal;
+    unicode-range: U+0E00-0E7F, U+0020-007F, U+00A0-00FF;
+    font-display: swap;
+}
+
+/* 2. จากนั้นกำหนด style */
+* {
+    text-shadow: 
+        0 1px 0 rgba(0,0,0,0.08),
+        0 2px 1px rgba(0,0,0,0.08) !important;
+    -webkit-text-stroke: 0.03px currentColor !important;
+}
+    @media print {
+      .controls-container { display: none !important; }
+      body { margin: 0 !important; padding: 0 !important; background-color: white !important; }
+      .page-div { width: 100% !important; height: 100% !important; margin: 0 !important; padding: 0 !important; page-break-after: always; }
+      .page-div:last-child { page-break-after: avoid; }
+    }
+    .page-div {
+      page-break-after: always;
+      margin-bottom: 20px;
+    }
+    .page-div:last-child {
+      page-break-after: avoid;
+      margin-bottom: 0;
+    }
+    /* Receipt specific styles */
+    .ft00{font-size:19px;font-family:'THSarabunPsk';color:#000000;}
+    .ft01{font-size:25px;font-family:'THSarabunPsk';color:#000000;}
+    .ft02{font-size:22px;font-family:'THSarabunPsk';color:#000000;}
+    .ft03{font-size:22px;font-family:'THSarabunPsk';color:#000000;}
+    .ft04{font-size:15px;font-family:'THSarabunPsk';color:#000000;}
+    .ft06{font-size:15px;line-height:17px;font-family:'THSarabunPsk';color:#000000;}
+  </style>
+  <script type="text/javascript">
+    let allWorkerData = [];
+    let currentIndex = 0;
+    
+    function setImageSrc(imgElementId, src, defaultSrc, workerName, type) {
+      const imgElement = document.getElementById(imgElementId);
+      if (!imgElement) {
+        console.error(`Image element with ID "${imgElementId}" not found.`);
+        return;
+      }
+      console.log(`Setting ${type} image for ${workerName || 'N/A'}`);
+      if (src && src.trim() !== '') {
+        imgElement.crossOrigin = "anonymous";
+        const testImage = new Image();
+        testImage.crossOrigin = "anonymous";
+        testImage.onload = function() {
+          console.log(`Successfully loaded ${type} image:`, src);
+          imgElement.src = src;
+        };
+        testImage.onerror = function() {
+          console.warn(`Failed to load ${type} image from "${src}" for ${workerName || 'N/A'}, using fallback.`);
+          imgElement.src = defaultSrc;
+        };
+        testImage.src = src;
+      } else {
+        console.warn(`${type} image URL is empty for ${workerName || 'N/A'}, using fallback.`);
+        imgElement.src = defaultSrc;
+      }
+    }
+    
+    function updateSVGText(elementId, text) {
+      const element = document.getElementById(elementId);
+      if (element) {
+        element.textContent = text;
+      } else {
+        console.warn(`SVG element with ID "${elementId}" not found.`);
+      }
+    }
+    
+    // Function to shift all <text> elements in the SVG down by one line (17px)
+    function shiftTextElementsDown(svgElement) {
+      const textElements = svgElement.querySelectorAll('text');
+      textElements.forEach(text => {
+        const currentY = parseFloat(text.getAttribute('y')) || 0;
+        text.setAttribute('y', currentY + 17); // Shift down by 17px (one line height)
+      });
+    }
+
+    function getCurrentTimestamp() {
+      const now = new Date();
+      const thaiDate = now.toLocaleString('th-TH', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour24: false
+      }).replace(',', ' น.');
+      return thaiDate;
+    }
+    
+    function loadWorkerData() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const requestNumberFromUrl = urlParams.get('id');
+      console.log("Loading data from combined-data.json...");
+      
+      // Show loading state
+      updateAllSVGFields('Loading data...');
+      
+      fetch('combined-data.json')
+        .then(response => {
+          console.log("Response status:", response.status);
+          if (!response.ok) {
+            console.error(`HTTP error! status: ${response.status}`);
+            throw new Error('Failed to load combined-data.json or file does not exist.');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log("Data loaded successfully, record count:", data.length);
+          if (data.length > 0) console.log("First record sample:", data[0]);
+          if (!Array.isArray(data) || data.length === 0) {
+            throw new Error('Data in combined-data.json is empty or not a valid array.');
+          }
+          allWorkerData = data;
+          populateWorkerDropdown();
+          if (requestNumberFromUrl) {
+            console.log("Searching for ID from URL parameter:", requestNumberFromUrl);
+            currentIndex = allWorkerData.findIndex(w => w.requestNumber && w.requestNumber.toString() === requestNumberFromUrl.toString());
+            if (currentIndex === -1) {
+              currentIndex = 0;
+              console.warn(`Worker with request number "${requestNumberFromUrl}" not found. Displaying the first worker instead.`);
+            } else {
+              console.log("Worker found at index:", currentIndex);
+            }
+          } else {
+            currentIndex = 0;
+            console.log("No ID in URL parameter, displaying the first worker.");
+          }
+          displayWorkerData(currentIndex);
+        })
+        .catch(error => {
+          console.error('Error loading JSON:', error);
+          showError(error.message);
+        });
+    }
+    
+    function updateAllSVGFields(value) {
+      // Page 1 fields
+      updateSVGText('svg-requestNumber', value);
+      updateSVGText('svg-englishName', value);
+      updateSVGText('svg-englishNameDuplicate', value);
+      updateSVGText('svg-thaiName', value);
+      updateSVGText('svg-personalID', value);
+      updateSVGText('svg-workPermitNumber', value);
+      updateSVGText('svg-alienReferenceNumber', value);
+      updateSVGText('svg-nationality', value);
+      updateSVGText('svg-age', value);
+      updateSVGText('svg-birthDate', value);
+      
+      // Page 2 fields
+      updateSVGText('svg-requestNumberReceipt', value);
+      updateSVGText('svg-receiptNumberReceipt', value);
+      updateSVGText('svg-paymentNumberReceipt', value);
+      updateSVGText('svg-payerNameReceipt', value);
+      updateSVGText('svg-nationalityReceipt', value);
+      updateSVGText('svg-alienReferenceReceipt', value);
+      updateSVGText('svg-personalIDReceipt', value);
+    }
+    
+    function showError(message) {
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'text-red-500 text-center mt-5 p-2 bg-red-100 border border-red-500 rounded';
+      errorDiv.innerHTML = `<p>Error loading ${message}</p>`;
+      document.body.prepend(errorDiv);
+      updateAllSVGFields('Error');
+    }
+    
+    function populateWorkerDropdown() {
+      const dropdown = document.getElementById('workerDropdown');
+      if (!dropdown) return;
+      dropdown.innerHTML = '<option value="all">ทั้งหมด</option>';
+      allWorkerData.forEach((worker, index) => {
+        const option = document.createElement('option');
+        option.value = index;
+        option.textContent = `${worker.requestNumber || 'N/A'} - ${worker.thaiName || worker.englishName || 'N/A'}`;
+        dropdown.appendChild(option);
+      });
+    }
+    
+    function displayWorkerData(index) {
+      if (index < 0 || index >= allWorkerData.length) {
+        console.error(`Index out of bounds: ${index}`);
+        return;
+      }
+      const worker = allWorkerData[index];
+      console.log("Displaying worker data for index:", index, worker);
+
+      // Update Page 1 SVG elements
+      updateSVGText('svg-requestNumber', worker.requestNumber || 'N/A');
+      updateSVGText('svg-englishName', worker.englishName || 'N/A');
+      updateSVGText('svg-englishNameDuplicate', worker.englishName || 'N/A');
+      updateSVGText('svg-thaiName', `: ${worker.thaiName || 'N/A'}`);
+      updateSVGText('svg-personalID', `: ${worker.personalID || 'N/A'}`);
+      updateSVGText('svg-workPermitNumber', `: ${worker.workPermitNumber || 'N/A'}`);
+      updateSVGText('svg-alienReferenceNumber', `: ${worker.alienReferenceNumber || 'N/A'}`);
+      updateSVGText('svg-nationality', `: ${worker.nationality || 'N/A'}`);
+      updateSVGText('svg-age', `: ${worker.age || 'N/A'}`);
+      updateSVGText('svg-birthDate', `: ${worker.birthDate || 'N/A'}`);
+
+      // Update Page 2 SVG elements
+      updateSVGText('svg-requestNumberReceipt', worker.requestNumber || 'N/A');
+      updateSVGText('svg-receiptNumberReceipt', worker.receiptNumber || 'N/A');
+      updateSVGText('svg-paymentNumberReceipt', worker.paymentNumber || 'N/A');
+      updateSVGText('svg-payerNameReceipt', worker.englishName || worker.thaiName || 'N/A');
+      updateSVGText('svg-nationalityReceipt', worker.nationality || 'N/A');
+      updateSVGText('svg-alienReferenceReceipt', worker.alienReferenceNumber || 'N/A');
+      updateSVGText('svg-personalIDReceipt', worker.personalID || 'N/A');
+
+      // Update Profile Image
+      const defaultProfileSrc = 'https://via.placeholder.com/110x138?text=No+Image';
+      setImageSrc('svg-profilePic', worker.profileImage, defaultProfileSrc, worker.englishName, 'profile picture');
+
+      // Update QR Codes
+      const currentUrl = window.location.href;
+      const baseUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/') + 1);
+      const workerPageUrl = `${baseUrl}worker.html?id=${encodeURIComponent(worker.requestNumber || '')}`;
+      const currentDomain = window.location.origin;
+      const receiptUrl = `${currentDomain}/pdf.html?id=${encodeURIComponent(worker.requestNumber || '')}`;
+      const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&ecc=H&data=${encodeURIComponent(workerPageUrl)}`;
+      const receiptQrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&ecc=H&data=${encodeURIComponent(receiptUrl)}`;
+      const defaultQrCodeSrc = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&ecc=H&data=https://via.placeholder.com';
+      
+      setImageSrc('svg-qrCode', qrCodeApiUrl, defaultQrCodeSrc, worker.englishName, 'work permit QR code');
+      setImageSrc('svg-receiptQrCode', receiptQrCodeApiUrl, defaultQrCodeSrc, worker.englishName, 'receipt QR code');
+
+      // Update Timestamps
+      const timestamp = getCurrentTimestamp();
+      const workPermitTimestamp = `เอกสารอิเล็กทรอนิกส์ฉบับนี้ถูกสร้างจากระบบอนุญาตทำงานคนต่างด้าวที่มีสถานะการทำงานไม่ถูกต้องตามกฎหมาย ตามมติคณะรัฐมนตรีเมื่อวันที่ 24 กันยายน 2567<br/>โดยกรมการจัดหางาน กระทรวงแรงงาน<br/>พิมพ์เอกสาร วันที่ 10 เมษายน 2568 ${timestamp} น.`;
+      const receiptTimestamp = `เอกสารอิเล็กทรอนิกส์ฉบับนี้ถูกสร้างจากระบบอนุญาตทำงานคนต่างด้าวที่มีสถานะการทำงานไม่ถูกต้องตามกฎหมาย ตามมติคณะรัฐมนตรีเมื่อวันที่ 24 กันยายน 2567<br/>โดยกรมการจัดหางาน กระทรวงแรงงาน<br/>พิมพ์เอกสาร วันที่ 10 เมษายน 2568 ${timestamp} น.`;
+      
+      updateSVGText('svg-printDate', `พิมพ์เอกสาร วันที่ 10 เมษายน 2568 ${timestamp} น.`);
+      updateSVGText('svg-receiptPrintDate', `พิมพ์เอกสาร วันที่ 10 เมษายน 2568 ${timestamp} น.`);
+
+      // Update dropdown
+      const dropdown = document.getElementById('workerDropdown');
+      if (dropdown) {
+        dropdown.value = index;
+      }
+    }
+    
+    function showPreviousWorker() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        displayWorkerData(currentIndex);
+      } else {
+        alert('This is the first record.');
+      }
+    }
+    
+    function showNextWorker() {
+      if (currentIndex < allWorkerData.length - 1) {
+        currentIndex++;
+        displayWorkerData(currentIndex);
+      } else {
+        alert('This is the last record.');
+      }
+    }
+    
+    function handleWorkerChange() {
+      const dropdown = document.getElementById('workerDropdown');
+      const selectedValue = dropdown.value;
+      if (selectedValue !== 'all') {
+        currentIndex = parseInt(selectedValue);
+        displayWorkerData(currentIndex);
+      }
+    }
+    
+    async function downloadPDF(workerItem, filenameSuffix = '') {
+      try {
+        const filename = 'mpdf.pdf';
+        
+        // Use server-side PDF generation if available
+        if (window.pdfGenerator) {
+          const success = await window.pdfGenerator.generateWorkerPDF(workerItem.requestNumber);
+          if (success) return;
+        }
+        
+        // Fallback to client-side generation
+        const elements = [document.getElementById('page1-div'), document.getElementById('page2-div')];
+        
+        // Hide controls during PDF generation
+        const controls = document.querySelector('.controls-container');
+        if (controls) controls.style.display = 'none';
+        
+        // Ensure correct worker data is displayed
+        if (allWorkerData[currentIndex].requestNumber !== workerItem.requestNumber) {
+          const tempIndex = allWorkerData.findIndex(w => w.requestNumber === workerItem.requestNumber);
+          if (tempIndex !== -1) displayWorkerData(tempIndex);
+        }
+        
+        // Wait for images to load
+        const images = document.querySelectorAll('img');
+        await Promise.all(Array.from(images).map(img => {
+          return new Promise(resolve => {
+            if (img.complete) {
+              resolve();
+            } else {
+              img.onload = resolve;
+              img.onerror = resolve;
+              setTimeout(resolve, 2000);
+            }
+          });
+        }));
+        
+        // PDF options for 2 pages
+        const opt = {
+          margin: [0, 0, 0, 0],
+          filename: filename,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: {
+            scale: 3,
+            useCORS: true,
+            width: 892,
+            height: 2522,
+            scrollX: 0,
+            scrollY: 0
+          },
+          jsPDF: {
+            unit: 'px',
+            format: [892, 1261],
+            orientation: 'portrait',
+            compress: true
+          }
+        };
+        
+        // Create container for both pages
+        const container = document.createElement('div');
+        container.style.width = '892px';
+        container.style.height = '2522px';
+        
+        // Clone both pages
+        const page1Clone = elements[0].cloneNode(true);
+        const page2Clone = elements[1].cloneNode(true);
+        page1Clone.style.marginBottom = '0';
+        page2Clone.style.marginTop = '0';
+        
+        container.appendChild(page1Clone);
+        container.appendChild(page2Clone);
+        document.body.appendChild(container);
+        
+        await html2pdf().set(opt).from(container).save();
+        
+        // Clean up
+        document.body.removeChild(container);
+        
+        // Show controls again
+        if (controls) controls.style.display = 'block';
+        
+        // Restore original data if needed
+        if (allWorkerData[currentIndex].requestNumber !== workerItem.requestNumber) {
+          displayWorkerData(currentIndex);
+        }
+      } catch (error) {
+        console.error('Error generating PDF:', error);
+        alert('เกิดข้อผิดพลาดในการสร้าง PDF กรุณาลองใหม่อีกครั้ง');
+        
+        // Show controls again on error
+        const controls = document.querySelector('.controls-container');
+        if (controls) controls.style.display = 'block';
+      }
+    }
+    
+    async function downloadCurrentPDF() {
+      await downloadPDF(allWorkerData[currentIndex]);
+    }
+    
+    async function downloadAllPDFs() {
+      const dropdown = document.getElementById('workerDropdown');
+      const selectedValue = dropdown.value;
+      if (selectedValue === 'all') {
+        const confirmDownload = confirm(`กำลังจะดาวน์โหลด PDF ทั้งหมด ${allWorkerData.length} ไฟล์ ต้องการดำเนินการต่อหรือไม่?`);
+        if (!confirmDownload) return;
+        alert(`เตรียมดาวน์โหลด ${allWorkerData.length} ไฟล์ PDF กรุณารอสักครู่...`);
+        
+        for (let i = 0; i < allWorkerData.length; i++) {
+          try {
+            displayWorkerData(i);
+            console.log(`Downloading PDF ${i + 1} of ${allWorkerData.length}: ${allWorkerData[i].requestNumber}`);
+            await downloadPDF(allWorkerData[i], `_batch_${i+1}`);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+          } catch (error) {
+            console.error(`Error downloading PDF for worker ${i + 1}:`, error);
+            continue;
+          }
+        }
+        
+        alert('การดาวน์โหลด PDF ทั้งหมดเสร็จสิ้น');
+        
+        // Restore original data
+        if (currentIndex >= 0 && currentIndex < allWorkerData.length) {
+          displayWorkerData(currentIndex);
+        } else if (allWorkerData.length > 0) {
+          displayWorkerData(0);
+        }
+      } else {
+        await downloadPDF(allWorkerData[currentIndex]);
+      }
+    }
+    
+    // Load SVG templates using the original method you provided
+    async function loadSVGTemplates() {
+      try {
+        // Load Page 1 SVG
+        const page1Response = await fetch('complete-page1.svg');
+        const page1SVG = await page1Response.text();
+        document.getElementById('page1-div').innerHTML = page1SVG;
+
+        // Load Page 2 SVG and adjust text positions
+        const page2Response = await fetch('complete-page2.svg');
+        const page2SVG = await page2Response.text();
+        const parser = new DOMParser();
+        const svgDoc = parser.parseFromString(page2SVG, 'image/svg+xml');
+        const svgElement = svgDoc.querySelector('svg');
+
+        // Shift all text elements down by one line (as you originally implemented)
+        shiftTextElementsDown(svgElement);
+
+        // Serialize the modified SVG back to a string
+        const serializer = new XMLSerializer();
+        const modifiedPage2SVG = serializer.serializeToString(svgElement);
+        document.getElementById('page2-div').innerHTML = modifiedPage2SVG;
+
+        console.log('Complete SVG templates loaded successfully, Page 2 text shifted down by 17px');
+      } catch (error) {
+        console.error('Error loading complete SVG templates:', error);
+        // Fallback to original templates
+        loadOriginalTemplates();
+      }
+    }
+
+    function loadOriginalTemplates() {
+      console.log('Loading original SVG templates as fallback');
+      fetch('page1-template.svg')
+        .then(response => response.text())
+        .then(svg => {
+          document.getElementById('page1-div').innerHTML = svg;
+          return fetch('page2-template.svg');
+        })
+        .then(response => response.text())
+        .then(svg => {
+          const parser = new DOMParser();
+          const svgDoc = parser.parseFromString(svg, 'image/svg+xml');
+          const svgElement = svgDoc.querySelector('svg');
+
+          // Shift all text elements down by one line for fallback template
+          shiftTextElementsDown(svgElement);
+
+          // Serialize the modified SVG back to a string
+          const serializer = new XMLSerializer();
+          const modifiedPage2SVG = serializer.serializeToString(svgDoc);
+          document.getElementById('page2-div').innerHTML = modifiedPage2SVG;
+
+          console.log('Original SVG templates loaded as fallback, Page 2 text shifted down by 17px');
+        })
+        .catch(error => {
+          console.error('Error loading fallback templates:', error);
+        });
+    }
+
+    // Initialize when page loads
+    window.onload = function() {
+      try {
+        loadSVGTemplates(); // Load and shift SVG templates
+        loadWorkerData();
+      } catch (error) {
+        console.error('Error during initialization:', error);
+        showError('Failed to initialize application');
+      }
+    };
+  </script>
+</head>
+<body class="bg-gray-500">
+  <!-- Controls Container -->
+  <div class="controls-container fixed bottom-4 left-4 bg-white/30 p-4 rounded-md shadow-lg z-[1000] w-[280px]">
+    <select id="workerDropdown" onchange="handleWorkerChange()" class="w-full my-2 px-3 py-2 rounded border border-gray-300 font-['THSarabunPSK'] text-base">
+      <option value="all">เลือกแรงงาน (ทั้งหมด)</option>
+    </select>
+    <button onclick="downloadCurrentPDF()" class="w-full my-1 px-3 py-2 rounded bg-green-500 text-white font-['THSarabunPSK'] text-base hover:bg-green-600 transition-colors">ดาวน์โหลด PDF ปัจจุบัน</button>
+    <button onclick="downloadAllPDFs()" class="w-full my-1 px-3 py-2 rounded bg-green-500 text-white font-['THSarabunPSK'] text-base hover:bg-green-600 transition-colors">ดาวน์โหลด PDF (ตามที่เลือก)</button>
+   </div>
+
+  <!-- Page 1: SVG Template -->
+  <div id="page1-div" class="page-div relative w-[892px] h-[1261px] font-['THSarabunPSK'] text-black mx-auto bg-white">
+    <!-- SVG content will be loaded here -->
+  </div>
+
+  <!-- Page 2: SVG Template -->
+  <div id="page2-div" class="page-div relative w-[892px] h-[1261px] font-['THSarabunPSK'] text-black mx-auto bg-white">
+    <!-- SVG content will be loaded here -->
+  </div>
+
+  <script>
+    // Load SVG templates
+    async function loadSVGTemplates() {
+      try {
+        // Load Page 1 SVG
+        const page1Response = await fetch('complete-page1.svg');
+        const page1SVG = await page1Response.text();
+        document.getElementById('page1-div').innerHTML = page1SVG;
+        
+        // Load Page 2 SVG
+        const page2Response = await fetch('complete-page2.svg');
+        const page2SVG = await page2Response.text();
+        document.getElementById('page2-div').innerHTML = page2SVG;
+        
+        console.log('Complete SVG templates loaded successfully');
+      } catch (error) {
+        console.error('Error loading complete SVG templates:', error);
+        // Fallback to original templates
+        loadOriginalTemplates();
+      }
+    }
+    
+    function loadOriginalTemplates() {
+      console.log('Loading original SVG templates as fallback');
+      // Load original templates if complete ones fail
+      fetch('page1-template.svg')
+        .then(response => response.text())
+        .then(svg => {
+          document.getElementById('page1-div').innerHTML = svg;
+          return fetch('page2-template.svg');
+        })
+        .then(response => response.text())
+        .then(svg => {
+          document.getElementById('page2-div').innerHTML = svg;
+          console.log('Original SVG templates loaded as fallback');
+        })
+        .catch(error => {
+          console.error('Error loading fallback templates:', error);
+        });
+    }
+    
+    // Load SVG templates when page loads
+    window.addEventListener('load', loadSVGTemplates);
+  </script>
+  
+  <!-- PDF Generator -->
+  <script src="js/pdf-generator.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "worker-document-system",
+  "version": "1.0.0",
+  "description": "Foreign Worker Document Management System",
+  "main": "main1-new.html",
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "netlify build"
+  },
+  "dependencies": {
+    "puppeteer": "^21.0.0",
+    "node-fetch": "^3.3.0"
+  },
+  "devDependencies": {
+    "netlify-cli": "^16.0.0"
+  }
+}

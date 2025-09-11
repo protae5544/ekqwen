@@ -24,7 +24,3 @@
 
 [functions]
   directory = "netlify/functions"
-
-[functions.generate-pdf]
-  timeout = 30
-  memory = 1024

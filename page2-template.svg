@@ -1,0 +1,123 @@
+<svg width="892" height="1261" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    @font-face {
+      font-family: 'THSarabunPsk';
+      src: url('https://oldqifkvaagtseibueaf.supabase.co/storage/v1/object/public/zzoo/ozz/ss-thsbn.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+      unicode-range: U+0E00-0E7F, U+0020-007F, U+00A0-00FF;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'THSarabunPsk';
+      src: url('https://oldqifkvaagtseibueaf.supabase.co/storage/v1/object/public/zzoo/ozz/ss-thsbn-bold.woff2') format('woff2');
+      font-weight: bold;
+      font-style: normal;
+      unicode-range: U+0E00-0E7F, U+0020-007F, U+00A0-00FF;
+      font-display: swap;
+    }
+    .static-text, .receipt-text { 
+      font-family: 'THSarabunPsk', sans-serif; 
+      fill: #000000; 
+      user-select: none;
+      text-shadow: 
+        0 1px 0 rgba(0,0,0,0.08),
+        0 2px 1px rgba(0,0,0,0.08);
+      -webkit-text-stroke: 0.03px currentColor;
+    }
+    .ft00 { font-size: 19px; }
+    .ft01 { font-size: 25px; font-weight: bold; }
+    .ft02 { font-size: 22px; font-weight: bold; }
+    .ft03 { font-size: 22px; }
+    .ft04 { font-size: 15px; }
+    .ft06 { font-size: 15px; line-height: 17px; }
+  </style>
+  
+  <!-- Background -->
+  <image href="bg2.svg" x="0" y="0" width="892" height="1261"/>
+  
+  <!-- Department Info -->
+  <text x="86" y="147" class="receipt-text ft00">กรมการจัดหางาน</text>
+  <text x="88" y="170" class="receipt-text ft00">กระทรวงแรงงาน</text>
+  
+  <!-- Receipt Header -->
+  <text x="397" y="90" class="receipt-text ft01" font-weight="bold">ใบเสร็จรับเงิน</text>
+  <text x="418" y="120" class="receipt-text ft01" font-weight="bold">ต้นฉบับ</text>
+  
+  <!-- Receipt Number -->
+  <text x="598" y="60" class="receipt-text ft00">เลขที่</text>
+  <text x="640" y="60" class="dynamic-text ft00" id="svg-receiptNumberReceipt">xxxxxxx</text>
+  
+  <!-- Office and Date -->
+  <text x="582" y="149" class="receipt-text ft00">ที่ทำการ  สำนักบริหารแรงงานต่างด้าว</text>
+  <text x="602" y="188" class="receipt-text ft00">วันที่  19 มีนาคม 2568</text>
+  
+  <!-- Payment Number -->
+  <text x="540" y="227" class="receipt-text ft00">เลขที่ใบชำระเงิน</text>
+  <text x="640" y="227" class="dynamic-text ft00" id="svg-paymentNumberReceipt">IV680329/002308</text>
+  
+  <!-- Payer Information -->
+  <text x="60" y="271" class="receipt-text ft00">เลขรับคำขอที่</text>
+  <text x="180" y="271" class="dynamic-text ft00" id="svg-requestNumberReceipt">xxxxxxx</text>
+  
+  <text x="60" y="310" class="receipt-text ft00">ชื่อผู้ชำระเงิน</text>
+  <text x="180" y="310" class="dynamic-text ft00" id="svg-payerNameReceipt">xxxxxxxxxxxxx</text>
+  
+  <text x="471" y="310" class="receipt-text ft00">สัญชาติ</text>
+  <text x="520" y="310" class="dynamic-text ft00" id="svg-nationalityReceipt">เมียนมา</text>
+  
+  <text x="60" y="354" class="receipt-text ft00">เลขอ้างอิงคนต่างด้าว</text>
+  <text x="180" y="354" class="dynamic-text ft00" id="svg-alienReferenceReceipt">xxxxxxxxxxxxx</text>
+  
+  <text x="432" y="354" class="receipt-text ft00">หมายเลขประจำตัวคนต่างด้าว</text>
+  <text x="640" y="354" class="dynamic-text ft00" id="svg-personalIDReceipt">xxxxxxxxxxxxx</text>
+  
+  <!-- Employer Information -->
+  <text x="60" y="399" class="receipt-text ft00">ชื่อนายจ้าง / สถานประกอบการ  บริษัท ดี คอนสตรัคชั่น แอนด์ซัพพลาย จำกัด</text>
+  <text x="60" y="438" class="receipt-text ft00">เลขประจำตัวนายจ้าง</text>
+  <text x="233" y="437" class="receipt-text ft00"> 0215563007209</text>
+  
+  <!-- Items Header -->
+  <text x="345" y="526" class="receipt-text ft02" font-weight="bold">รายการ</text>
+  <text x="688" y="526" class="receipt-text ft02" font-weight="bold">จำนวนเงิน</text>
+  
+  <!-- Fee Items -->
+  <text x="118" y="572" class="receipt-text ft03">1. ค่าธรรมเนียมในการยื่นคำขอ ฉบับละ 100 บาท</text>
+  <text x="736" y="572" class="receipt-text ft03">100.00</text>
+  
+  <text x="118" y="616" class="receipt-text ft03">2. ค่าธรรมเนียมใบอนุญาตทำงาน</text>
+  <text x="736" y="616" class="receipt-text ft03">900.00</text>
+  
+  <!-- Empty rows -->
+  <text x="97" y="694" class="receipt-text ft03"> </text>
+  <text x="648" y="694" class="receipt-text ft03"> </text>
+  
+  <!-- Total -->
+  <text x="174" y="772" class="receipt-text ft02" font-weight="bold">รวมเป็นเงินทั้งสิ้น (บาท)</text>
+  <text x="188" y="799" class="receipt-text ft02" font-weight="bold">( หนึ่งพันบาทถ้วน )</text>
+  <text x="385" y="786" class="receipt-text ft03"> </text>
+  <text x="722" y="774" class="receipt-text ft02" font-weight="bold">1,000.00</text>
+  
+  <!-- Receipt Confirmation -->
+  <text x="94" y="894" class="receipt-text ft00">ได้รับเงินไว้เป็นการถูกต้องแล้ว</text>
+  
+  <!-- Signature -->
+  <text x="481" y="977" class="receipt-text ft00">(ลงชื่อ)</text>
+  <text x="564" y="977" class="receipt-text ft00">นางสาวอารีวรรณ โพธิ์นิ่มแดง</text>
+  <text x="762" y="977" class="receipt-text ft00">(ผู้รับเงิน)</text>
+  
+  <!-- Position -->
+  <text x="473" y="1017" class="receipt-text ft00">ตำแหน่ง</text>
+  <text x="562" y="1016" class="receipt-text ft00">นักวิชาการแรงงานชำนาญการ</text>
+  
+  <!-- Receipt QR Code -->
+  <rect x="120" y="925" width="90" height="90" fill="none" stroke="#ccc" stroke-width="1"/>
+  <foreignObject x="120" y="925" width="90" height="90">
+    <img id="svg-receiptQrCode" src="https://via.placeholder.com/90?text=No+QR" width="90" height="90"/>
+  </foreignObject>
+  
+  <!-- Receipt Timestamp -->
+  <text x="55" y="1133" class="receipt-text ft06" id="svg-receiptTimestamp">เอกสารอิเล็กทรอนิกส์ฉบับนี้ถูกสร้างจากระบบอนุญาตทำงานคนต่างด้าวที่มีสถานะการทำงานไม่ถูกต้องตามกฎหมาย ตามมติคณะรัฐมนตรีเมื่อวันที่ 24 กันยายน 2567</text>
+  <text x="55" y="1150" class="receipt-text ft06">โดยกรมการจัดหางาน กระทรวงแรงงาน</text>
+  <text x="55" y="1167" class="receipt-text ft06" id="svg-receiptPrintDate">พิมพ์เอกสาร วันที่ Loading...</text>
+</svg>

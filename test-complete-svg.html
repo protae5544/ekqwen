@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="th" xml:lang="th">
+<head>
+  <title>Test Complete SVG Templates</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <style>
+    body { 
+      font-family: 'THSarabunPsk', sans-serif; 
+      margin: 20px; 
+      background-color: #f0f0f0;
+    }
+    .page-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+    }
+    .page {
+      border: 1px solid #ccc;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      background-color: white;
+    }
+    .controls {
+      margin: 20px;
+      padding: 15px;
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 15px;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      font-family: 'THSarabunPsk', sans-serif;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    @font-face {
+      font-family: 'THSarabunPsk';
+      src: url('https://oldqifkvaagtseibueaf.supabase.co/storage/v1/object/public/zzoo/ozz/ss-thsbn.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+      unicode-range: U+0E00-0E7F, U+0020-007F, U+00A0-00FF;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'THSarabunPsk';
+      src: url('https://oldqifkvaagtseibueaf.supabase.co/storage/v1/object/public/zzoo/ozz/ss-thsbn-bold.woff2') format('woff2');
+      font-weight: bold;
+      font-style: normal;
+      unicode-range: U+0E00-0E7F, U+0020-007F, U+00A0-00FF;
+      font-display: swap;
+    }
+  </style>
+  <script>
+    function loadCompleteSVGs() {
+      // Load Page 1
+      fetch('complete-page1.svg')
+        .then(response => response.text())
+        .then(svg => {
+          document.getElementById('page1').innerHTML = svg;
+          console.log('Page 1 SVG loaded');
+        })
+        .catch(error => {
+          console.error('Error loading page 1:', error);
+          document.getElementById('page1').innerHTML = '<p>Error loading Page 1 SVG</p>';
+        });
+      
+      // Load Page 2
+      fetch('complete-page2.svg')
+        .then(response => response.text())
+        .then(svg => {
+          document.getElementById('page2').innerHTML = svg;
+          console.log('Page 2 SVG loaded');
+        })
+        .catch(error => {
+          console.error('Error loading page 2:', error);
+          document.getElementById('page2').innerHTML = '<p>Error loading Page 2 SVG</p>';
+        });
+    }
+    
+    function testSampleData() {
+      // Update some dynamic fields with sample data
+      const sampleData = {
+        'svg-requestNumber': 'REQ001234',
+        'svg-englishName': 'MRS. MAY THET CHO',
+        'svg-thaiName': ': นาง เมย์ เท็ท โช',
+        'svg-personalID': ': 6685490000472',
+        'svg-workPermitNumber': ': 5400689000472',
+        'svg-nationality': ': เมียนมา',
+        'svg-age': ': 25',
+        'svg-birthDate': ': 15/05/2543',
+        'svg-alienReferenceNumber': ': ALIEN123456789',
+        'svg-receiptNumberReceipt': 'REC001234',
+        'svg-paymentNumberReceipt': 'IV680329/002308',
+        'svg-payerNameReceipt': 'MRS. MAY THET CHO',
+        'svg-nationalityReceipt': 'เมียนมา',
+        'svg-alienReferenceReceipt': 'ALIEN123456789',
+        'svg-personalIDReceipt': '6685490000472',
+        'svg-printDate': 'พิมพ์เอกสาร วันที่ 10 เมษายน 2568 14:30 น.',
+        'svg-receiptPrintDate': 'พิมพ์เอกสาร วันที่ 10 เมษายน 2568 14:30 น.'
+      };
+      
+      for (const [id, value] of Object.entries(sampleData)) {
+        const element = document.getElementById(id);
+        if (element) {
+          element.textContent = value;
+        }
+      }
+      
+      // Update images
+      const profilePic = document.getElementById('svg-profilePic');
+      if (profilePic) {
+        profilePic.src = 'https://via.placeholder.com/110x138?text=Sample+Image';
+      }
+      
+      const qrCode = document.getElementById('svg-qrCode');
+      if (qrCode) {
+        qrCode.src = 'https://api.qrserver.com/v1/create-qr-code/?size=69x69&data=https://example.com';
+      }
+      
+      const receiptQrCode = document.getElementById('svg-receiptQrCode');
+      if (receiptQrCode) {
+        receiptQrCode.src = 'https://api.qrserver.com/v1/create-qr-code/?size=90x90&data=https://example.com';
+      }
+      
+      console.log('Sample data applied');
+    }
+    
+    window.onload = function() {
+      loadCompleteSVGs();
+    };
+  </script>
+</head>
+<body>
+  <div class="controls">
+    <h2>Test Complete SVG Templates</h2>
+    <button onclick="loadCompleteSVGs()">Reload SVGs</button>
+    <button onclick="testSampleData()">Load Sample Data</button>
+  </div>
+  
+  <div class="page-container">
+    <div class="page">
+      <h3>Page 1 - Work Permit</h3>
+      <div id="page1" style="width: 892px; height: 1261px;">
+        Loading Page 1...
+      </div>
+    </div>
+    
+    <div class="page">
+      <h3>Page 2 - Receipt</h3>
+      <div id="page2" style="width: 892px; height: 1261px;">
+        Loading Page 2...
+      </div>
+    </div>
+  </div>
+</body>
+</html>

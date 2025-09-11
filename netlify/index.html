@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netlify Deployment - Foreign Worker Management System</title>
+    <style>
+        @font-face {
+            font-family: 'THSarabunPsk';
+            src: url('https://oldqifkvaagtseibueaf.supabase.co/storage/v1/object/public/zzoo/ozz/ss-thsbn.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            unicode-range: U+0E00-0E7F, U+0020-007F, U+00A0-00FF;
+            font-display: swap;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'THSarabunPsk', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.2em;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .deployment-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .deployment-card h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .steps {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+        
+        .steps li {
+            background: #f8f9fa;
+            margin-bottom: 15px;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .steps li h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .steps li p {
+            color: #7f8c8d;
+            line-height: 1.6;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(135deg, #229954, #1e8449);
+            transform: translateY(-2px);
+        }
+        
+        .btn.secondary {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+        }
+        
+        .btn.secondary:hover {
+            background: linear-gradient(135deg, #2980b9, #21618c);
+        }
+        
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .status-item {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .status-item.success {
+            background: linear-gradient(135deg, #27ae60, #229954);
+        }
+        
+        .status-item.warning {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+        
+        .file-list {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .file-list h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .file-list ul {
+            list-style: none;
+        }
+        
+        .file-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .file-list li:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>☁️ Netlify Deployment Guide</h1>
+            <p>คู่มือการ Deploy Foreign Worker Management System ขึ้น Netlify</p>
+        </div>
+
+        <div class="deployment-card">
+            <h2>🚀 Deployment Status</h2>
+            <div class="status-grid">
+                <div class="status-item success">
+                    <h3>✅ Frontend</h3>
+                    <p>Production Ready</p>
+                </div>
+                <div class="status-item success">
+                    <h3>✅ SVG Templates</h3>
+                    <p>Complete</p>
+                </div>
+                <div class="status-item warning">
+                    <h3>⚠️ Functions</h3>
+                    <p>Setup Required</p>
+                </div>
+                <div class="status-item">
+                    <h3>📊 Monitoring</h3>
+                    <p>Ready</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="deployment-card">
+            <h2>📋 Deployment Steps</h2>
+            <ol class="steps">
+                <li>
+                    <h3>Step 1: Connect to Netlify</h3>
+                    <p>1. Push project to GitHub repository<br>
+                       2. Connect repository to Netlify<br>
+                       3. Configure build settings (if needed)</p>
+                </li>
+                <li>
+                    <h3>Step 2: Configure Environment Variables</h3>
+                    <p>Set up any required environment variables in Netlify dashboard</p>
+                </li>
+                <li>
+                    <h3>Step 3: Test Production Build</h3>
+                    <p>Verify that all pages load correctly and SVG templates work</p>
+                </li>
+                <li>
+                    <h3>Step 4: Setup Functions (Optional)</h3>
+                    <p>Configure Netlify Functions for PDF generation if needed</p>
+                </li>
+                <li>
+                    <h3>Step 5: Deploy</h3>
+                    <p>Trigger deployment and verify live site functionality</p>
+                </li>
+            </ol>
+            
+            <a href="../main1-svg.html" class="btn">🚀 Test Production System</a>
+            <a href="../test-complete-svg.html" class="btn secondary">🧪 Test Templates</a>
+            <a href="../monitor-dashboard.html" class="btn secondary">📊 View Monitoring</a>
+        </div>
+
+        <div class="deployment-card">
+            <h2>📁 Production Files</h2>
+            <div class="file-list">
+                <h3>Main Application Files:</h3>
+                <ul>
+                    <li><span>index.html</span><span>🏠 Main Navigation</span></li>
+                    <li><span>main1-svg.html</span><span>📄 Production System</span></li>
+                    <li><span>complete-page1.svg</span><span>🎨 Work Permit Template</span></li>
+                    <li><span>complete-page2.svg</span><span>🎨 Receipt Template</span></li>
+                    <li><span>combined-data.json</span><span>📊 Worker Data</span></li>
+                    <li><span>bg1.svg, bg2.svg</span><span>🖼️ Background Images</span></li>
+                </ul>
+            </div>
+            
+            <div class="file-list">
+                <h3>Supporting Files:</h3>
+                <ul>
+                    <li><span>monitor-dashboard.html</span><span>📈 Monitoring Dashboard</span></li>
+                    <li><span>PROJECT_SUMMARY.md</span><span>📋 Project Summary</span></li>
+                    <li><span>test-complete-svg.html</span><span>🧪 Test Interface</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="deployment-card">
+            <h2>⚙️ Build Configuration</h2>
+            <p><strong>Build Command:</strong> Not required (static site)</p>
+            <p><strong>Publish Directory:</strong> Root directory (/)</p>
+            <p><strong>Node.js Version:</strong> 18.x (recommended)</p>
+            
+            <h3 style="margin-top: 20px;">🔗 Quick Links</h3>
+            <a href="https://app.netlify.com/" class="btn">🌐 Netlify Dashboard</a>
+            <a href="https://docs.netlify.com/" class="btn secondary">📚 Documentation</a>
+            <a href="../index.html" class="btn secondary">🏠 Back to Main</a>
+        </div>
+    </div>
+
+    <script>
+        // Add some interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Netlify deployment guide loaded');
+            
+            // Animate status items
+            const statusItems = document.querySelectorAll('.status-item');
+            statusItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    item.style.transition = 'all 0.5s ease';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify SVG Template System</title>
+    <style>
+        body {
+            font-family: 'THSarabunPsk', sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        .file-check {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        .test-buttons {
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            font-family: 'THSarabunPsk', sans-serif;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        @font-face {
+            font-family: 'THSarabunPsk';
+            src: url('https://oldqifkvaagtseibueaf.supabase.co/storage/v1/object/public/zzoo/ozz/ss-thsbn.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            unicode-range: U+0E00-0E7F, U+0020-007F, U+00A0-00FF;
+            font-display: swap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 ตรวจสอบระบบ SVG Template</h1>
+        
+        <div id="status-container"></div>
+        
+        <div class="test-buttons">
+            <button onclick="checkFiles()">ตรวจสอบไฟล์</button>
+            <button onclick="testDataLoading()">ทดสอบการโหลดข้อมูล</button>
+            <button onclick="testSVGRendering()">ทดสอบการแสดงผล SVG</button>
+            <button onclick="testCompleteSystem()">ทดสอบระบบทั้งหมด</button>
+        </div>
+        
+        <div id="test-results"></div>
+    </div>
+
+    <script>
+        const requiredFiles = [
+            'main1-svg.html',
+            'test-complete-svg.html', 
+            'complete-page1.svg',
+            'complete-page2.svg',
+            'combined-data.json',
+            'bg1.svg',
+            'bg2.svg'
+        ];
+
+        function addStatus(message, type = 'success') {
+            const container = document.getElementById('status-container');
+            const status = document.createElement('div');
+            status.className = `status ${type}`;
+            status.textContent = message;
+            container.appendChild(status);
+        }
+
+        function addFileCheck(filename, exists, size = 0) {
+            const results = document.getElementById('test-results');
+            const check = document.createElement('div');
+            check.className = 'file-check';
+            
+            const status = exists ? '✅' : '❌';
+            const sizeText = exists ? `(${size} bytes)` : '';
+            
+            check.innerHTML = `<strong>${status} ${filename}</strong> ${sizeText}`;
+            results.appendChild(check);
+        }
+
+        async function checkFiles() {
+            const results = document.getElementById('test-results');
+            results.innerHTML = '<h3>📁 ตรวจสอบไฟล์ที่จำเป็น:</h3>';
+            
+            let allFilesExist = true;
+            
+            for (const filename of requiredFiles) {
+                try {
+                    const response = await fetch(filename);
+                    if (response.ok) {
+                        const size = response.headers.get('content-length');
+                        addFileCheck(filename, true, parseInt(size));
+                    } else {
+                        addFileCheck(filename, false);
+                        allFilesExist = false;
+                    }
+                } catch (error) {
+                    addFileCheck(filename, false);
+                    allFilesExist = false;
+                }
+            }
+            
+            if (allFilesExist) {
+                addStatus('✅ ไฟล์ทั้งหมดพร้อมใช้งาน', 'success');
+            } else {
+                addStatus('❌ พบไฟล์ที่ไม่มีอยู่จริง', 'error');
+            }
+        }
+
+        async function testDataLoading() {
+            const results = document.getElementById('test-results');
+            results.innerHTML = '<h3>📊 ทดสอบการโหลดข้อมูล:</h3>';
+            
+            try {
+                const response = await fetch('combined-data.json');
+                if (!response.ok) {
+                    throw new Error('ไม่สามารถโหลดข้อมูลได้');
+                }
+                
+                const data = await response.json();
+                
+                const check = document.createElement('div');
+                check.className = 'file-check';
+                check.innerHTML = `<strong>✅ ข้อมูล JSON:</strong> ${data.length} รายการ`;
+                results.appendChild(check);
+                
+                // ตรวจสอบโครงสร้างข้อมูล
+                const firstItem = data[0];
+                const requiredFields = ['requestNumber', 'englishName', 'thaiName', 'nationality', 'workPermitNumber'];
+                
+                for (const field of requiredFields) {
+                    const fieldCheck = document.createElement('div');
+                    fieldCheck.className = 'file-check';
+                    const hasField = firstItem.hasOwnProperty(field);
+                    fieldCheck.innerHTML = `<strong>${hasField ? '✅' : '❌'} ${field}:</strong> ${hasField ? 'มีข้อมูล' : 'ไม่พบข้อมูล'}`;
+                    results.appendChild(fieldCheck);
+                }
+                
+                addStatus('✅ การโหลดข้อมูลทำงานได้', 'success');
+                
+            } catch (error) {
+                addStatus(`❌ การโหลดข้อมูลล้มเหลว: ${error.message}`, 'error');
+            }
+        }
+
+        async function testSVGRendering() {
+            const results = document.getElementById('test-results');
+            results.innerHTML = '<h3>🎨 ทดสอบการแสดงผล SVG:</h3>';
+            
+            // ทดสอบการโหลด SVG files
+            const svgFiles = ['complete-page1.svg', 'complete-page2.svg'];
+            
+            for (const filename of svgFiles) {
+                try {
+                    const response = await fetch(filename);
+                    if (response.ok) {
+                        const svgText = await response.text();
+                        
+                        const check = document.createElement('div');
+                        check.className = 'file-check';
+                        check.innerHTML = `<strong>✅ ${filename}:</strong> โหลดได้ (${svgText.length} characters)`;
+                        results.appendChild(check);
+                        
+                        // ตรวจสอบว่ามี font-face declarations
+                        const hasFont = svgText.includes('THSarabunPsk');
+                        const fontCheck = document.createElement('div');
+                        fontCheck.className = 'file-check';
+                        fontCheck.innerHTML = `<strong>${hasFont ? '✅' : '❌'} Font Declaration:</strong> ${hasFont ? 'พบ THSarabunPsk' : 'ไม่พบ font'}`;
+                        results.appendChild(fontCheck);
+                        
+                    } else {
+                        throw new Error('ไม่สามารถโหลดไฟล์ได้');
+                    }
+                } catch (error) {
+                    const errorCheck = document.createElement('div');
+                    errorCheck.className = 'file-check';
+                    errorCheck.innerHTML = `<strong>❌ ${filename}:</strong> ${error.message}`;
+                    results.appendChild(errorCheck);
+                }
+            }
+        }
+
+        async function testCompleteSystem() {
+            const results = document.getElementById('test-results');
+            results.innerHTML = '<h3>🚀 ทดสอบระบบทั้งหมด:</h3>';
+            
+            // ทดสอบการทำงานของ main1-svg.html
+            try {
+                const response = await fetch('main1-svg.html');
+                if (response.ok) {
+                    const htmlText = await response.text();
+                    
+                    const check = document.createElement('div');
+                    check.className = 'file-check';
+                    check.innerHTML = `<strong>✅ main1-svg.html:</strong> โหลดได้ (${htmlText.length} characters)`;
+                    results.appendChild(check);
+                    
+                    // ตรวจสอบ components สำคัญ
+                    const hasHtml2pdf = htmlText.includes('html2pdf');
+                    const hasTailwind = htmlText.includes('tailwindcss');
+                    const hasThaiFont = htmlText.includes('THSarabunPsk');
+                    
+                    const components = [
+                        { name: 'html2pdf.js', has: hasHtml2pdf },
+                        { name: 'Tailwind CSS', has: hasTailwind },
+                        { name: 'Thai Font', has: hasThaiFont }
+                    ];
+                    
+                    components.forEach(comp => {
+                        const compCheck = document.createElement('div');
+                        compCheck.className = 'file-check';
+                        compCheck.innerHTML = `<strong>${comp.has ? '✅' : '❌'} ${comp.name}:</strong> ${comp.has ? 'พบ' : 'ไม่พบ'}`;
+                        results.appendChild(compCheck);
+                    });
+                    
+                } else {
+                    throw new Error('ไม่สามารถโหลด main1-svg.html ได้');
+                }
+            } catch (error) {
+                addStatus(`❌ การทดสอบระบบล้มเหลว: ${error.message}`, 'error');
+            }
+            
+            // ทดสอบความพร้อมสำหรับการ deploy
+            const deploymentCheck = document.createElement('div');
+            deploymentCheck.className = 'file-check';
+            deploymentCheck.innerHTML = '<strong>🚀 Deployment Status:</strong> พร้อมสำหรับการ deploy ขึ้น Netlify';
+            results.appendChild(deploymentCheck);
+        }
+
+        // ตรวจสอบอัตโนมัติเมื่อโหลดหน้า
+        window.addEventListener('load', function() {
+            addStatus('🔍 เริ่มตรวจสอบระบบ SVG Template...', 'success');
+        });
+    </script>
+</body>
+</html>

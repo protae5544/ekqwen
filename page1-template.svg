@@ -1,0 +1,192 @@
+<svg width="892" height="1261" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    @font-face {
+      font-family: 'THSarabunPsk';
+      src: url('https://oldqifkvaagtseibueaf.supabase.co/storage/v1/object/public/zzoo/ozz/ss-thsbn.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+      unicode-range: U+0E00-0E7F, U+0020-007F, U+00A0-00FF;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'THSarabunPsk';
+      src: url('https://oldqifkvaagtseibueaf.supabase.co/storage/v1/object/public/zzoo/ozz/ss-thsbn-bold.woff2') format('woff2');
+      font-weight: bold;
+      font-style: normal;
+      unicode-range: U+0E00-0E7F, U+0020-007F, U+00A0-00FF;
+      font-display: swap;
+    }
+    .static-text, .receipt-text { 
+      font-family: 'THSarabunPsk', sans-serif; 
+      fill: #000000; 
+      user-select: none;
+      text-shadow: 
+        0 1px 0 rgba(0,0,0,0.08),
+        0 2px 1px rgba(0,0,0,0.08);
+      -webkit-text-stroke: 0.03px currentColor;
+    }
+    .header-text { font-size: 21px; font-weight: bold; }
+    .subheader-text { font-size: 21px; font-weight: bold; fill: #ff0000; }
+    .label-text { font-size: 15px; }
+    .colon-text { font-size: 14px; }
+    .data-text { font-size: 14px; }
+    .data-bold { font-size: 14px; font-weight: bold; }
+    .section-text { font-size: 16px; font-weight: bold; }
+    .info-text { font-size: 15px; font-weight: bold; }
+    .detail-text { font-size: 14px; }
+    .warning-text { font-size: 14px; font-weight: bold; }
+    .condition-text { font-size: 14px; }
+    .timestamp-text { font-size: 14px; }
+  </style>
+  
+  <!-- Background -->
+  <image href="bg1.svg" x="0" y="0" width="892" height="1261"/>
+  
+  <!-- Header Section -->
+  <text x="134" y="52" class="static-text header-text">ทะเบียนใบอนุญาตทำงานของคนต่างด้าวตามมติคณะรัฐมนตรี เมื่อวันที่ 24 กันยายน 2567</text>
+  <text x="134" y="77" class="static-text subheader-text">เอกสารฉบับนี้ใช้แทนใบอนุญาตทำงาน</text>
+  
+  <!-- Request Number Section -->
+  <text x="158" y="102" class="static-text label-text">เลขรับที่ (No.)</text>
+  <text x="224" y="102" class="static-text colon-text">:</text>
+  <text x="238" y="102" class="dynamic-text data-bold" id="svg-requestNumber">xxxxxxx</text>
+  
+  <text x="417" y="102" class="static-text label-text">วันที่อนุมัติ (Date)</text>
+  <text x="500" y="102" class="static-text colon-text">:</text>
+  <text x="514" y="102" class="static-text data-bold">06 มีนาคม 2568</text>
+  
+  <!-- Applicant Name -->
+  <text x="62" y="129" class="static-text label-text">ชื่อคนต่างด้าว (Name of Applicant)</text>
+  <text x="224" y="129" class="static-text colon-text">:</text>
+  <text x="238" y="129" class="dynamic-text data-bold" id="svg-englishName">xxxxxxxxxxxxx</text>
+  
+  <!-- Officer Information -->
+  <text x="94" y="155" class="static-text label-text">เจ้าหน้าที่ (Name of Officer)</text>
+  <text x="224" y="155" class="static-text colon-text">:</text>
+  <text x="238" y="155" class="static-text data-bold">นายสมมาตร อนันต์ธราทรัพย์</text>
+  <text x="440" y="155" class="static-text label-text">นายทะเบียน</text>
+  <text x="500" y="155" class="static-text colon-text">:</text>
+  <text x="238" y="182" class="static-text data-text">จัดหางานจังหวัดระยอง</text>
+  <text x="449" y="155" class="static-text data-text">(Registrar)</text>
+  <text x="546" y="155" class="static-text data-text">นายสมชาย มรกตศรีวรรณ</text>
+  <text x="555" y="182" class="static-text data-text">อธิบดีกรมการจัดหางาน</text>
+  <text x="577" y="201" class="static-text data-text">นายทะเบียน</text>
+  
+  <!-- Section Header -->
+  <text x="171" y="242" class="static-text section-text">ลงเลขรับและชำระค่ายื่นแบบคำขอ (REGISTERING APPLICATION FORM AND PAYING APPLICATION FEE)</text>
+  
+  <!-- Worker Information -->
+  <text x="55" y="269" class="static-text info-text">ข้อมูลคนต่างด้าว</text>
+  <text x="55" y="288" class="static-text detail-text">สถานะใบอนุญาต</text>
+  <text x="199" y="293" class="static-text detail-text">: อนุมัติ (รอพิมพ์บัตร)</text>
+  <text x="440" y="293" class="static-text detail-text">ออกให้ ณ จังหวัด</text>
+  <text x="586" y="293" class="static-text detail-text">: สำนักงานจัดหางานจังหวัดระยอง</text>
+  
+  <!-- Personal Details -->
+  <text x="55" y="315" class="static-text detail-text">เลขประจำตัวคนต่างด้าว</text>
+  <text x="199" y="315" class="dynamic-text detail-text" id="svg-personalID">: 6685490000472</text>
+  <text x="440" y="315" class="static-text detail-text">ใบอนุญาตทำงานเลขที่</text>
+  <text x="586" y="315" class="dynamic-text detail-text" id="svg-workPermitNumber">: 5400689000472</text>
+  
+  <text x="55" y="336" class="static-text detail-text">ชื่อภาษาไทย</text>
+  <text x="199" y="336" class="dynamic-text detail-text" id="svg-thaiName">: นาง เมย์ เท็ท โช</text>
+  <text x="440" y="336" class="static-text detail-text">ชื่อภาษาอังกฤษ</text>
+  <text x="586" y="336" class="static-text colon-text">:</text>
+  <text x="592" y="336" class="dynamic-text detail-text" id="svg-englishNameDuplicate">MRS. MAY THET CHO</text>
+  
+  <text x="55" y="358" class="static-text detail-text">วัน/เดือน/ปี (พ.ศ.) เกิด</text>
+  <text x="199" y="358" class="dynamic-text detail-text" id="svg-birthDate">: xx/xx/xx</text>
+  <text x="440" y="358" class="static-text detail-text">อายุ (ปี)</text>
+  <text x="586" y="358" class="dynamic-text detail-text" id="svg-age">: xx</text>
+  
+  <text x="55" y="380" class="static-text detail-text">สัญชาติ</text>
+  <text x="199" y="380" class="dynamic-text detail-text" id="svg-nationality">: เมียนมา</text>
+  <text x="440" y="380" class="static-text detail-text">สถานภาพ</text>
+  <text x="586" y="380" class="static-text detail-text">: -</text>
+  
+  <text x="55" y="401" class="static-text detail-text">ชื่อ-สกุล บิดา</text>
+  <text x="199" y="401" class="static-text detail-text">: -</text>
+  <text x="440" y="401" class="static-text detail-text">ชื่อ-สกุล มารดา</text>
+  <text x="586" y="401" class="static-text detail-text">: -</text>
+  
+  <text x="55" y="423" class="static-text detail-text">เลขอ้างอิงคนต่างด้าว</text>
+  <text x="199" y="423" class="dynamic-text detail-text" id="svg-alienReferenceNumber">: xxxxxxxxxxxxx</text>
+  <text x="55" y="444" class="static-text detail-text">ที่อยู่อาศัย</text>
+  <text x="199" y="444" class="static-text detail-text">: 230 หมู่ที่ 3 ตำบลแม่น้ำคู้ อำเภอปลวกแดง จังหวัดระยอง</text>
+  
+  <!-- Passport Information -->
+  <text x="55" y="475" class="static-text info-text">ข้อมูลหนังสือเดินทาง และข้อมูลการตรวจลงตรา</text>
+  <text x="55" y="494" class="static-text detail-text">เลขที่หนังสือเดินทาง</text>
+  <text x="199" y="494" class="static-text detail-text">: -</text>
+  <text x="440" y="494" class="static-text detail-text">ประเภทหนังสือเดินทาง</text>
+  <text x="586" y="494" class="static-text detail-text">: -</text>
+  <text x="55" y="516" class="static-text detail-text">สถานที่ออกหนังสือเดินทาง</text>
+  <text x="199" y="516" class="static-text detail-text">: -</text>
+  <text x="440" y="516" class="static-text detail-text">ประเทศที่ออกหนังสือเดินทาง</text>
+  <text x="586" y="516" class="static-text detail-text">: -</text>
+  <text x="55" y="538" class="static-text detail-text">วันที่ออกหนังสือเดินทาง</text>
+  <text x="199" y="538" class="static-text detail-text">: -</text>
+  <text x="440" y="538" class="static-text detail-text">วันหมดอายุ</text>
+  <text x="586" y="538" class="static-text detail-text">: -</text>
+  <text x="55" y="560" class="static-text detail-text">เลขที่ตรวจลงตรา</text>
+  <text x="199" y="560" class="static-text detail-text">: -</text>
+  <text x="55" y="582" class="static-text detail-text">ออกให้วันที่</text>
+  <text x="199" y="582" class="static-text detail-text">: -</text>
+  <text x="440" y="582" class="static-text detail-text">ใช้ได้ถึงวันที่</text>
+  <text x="586" y="582" class="static-text detail-text">: -</text>
+  
+  <!-- Employer Information -->
+  <text x="55" y="603" class="static-text info-text">ข้อมูลนายจ้าง/สถานประกอบการ</text>
+  <text x="55" y="623" class="static-text detail-text">เลขประจำตัวนายจ้าง</text>
+  <text x="199" y="623" class="static-text detail-text">: 0215563007209</text>
+  <text x="440" y="623" class="static-text detail-text">ชื่อนายจ้าง/สถานประกอบการ</text>
+  <text x="586" y="623" class="static-text detail-text">: บริษัท ดี คอนสตรัคชั่น แอนด์ซัพพลาย จำกัด</text>
+  <text x="55" y="645" class="static-text detail-text">ประเภทกิจการ</text>
+  <text x="199" y="645" class="static-text detail-text">: BT04 - กิจการก่อสร้าง</text>
+  <text x="55" y="667" class="static-text detail-text">ที่ตั้งสำนักงาน</text>
+  <text x="199" y="667" class="static-text detail-text">: 230 หมู่ที่ 3 ตำบลแม่น้ำคู้ อำเภอปลวกแดง จังหวัดระยอง</text>
+  
+  <!-- Work Information -->
+  <text x="55" y="688" class="static-text info-text">ข้อมูลการทำงาน</text>
+  <text x="55" y="707" class="static-text detail-text">ทำงานในตำแหน่ง</text>
+  <text x="199" y="707" class="static-text detail-text">: กรรมกร</text>
+  <text x="440" y="707" class="static-text detail-text">ลักษณะงาน</text>
+  <text x="586" y="707" class="static-text detail-text">: กรรมกร (กิจการก่อสร้าง)</text>
+  <text x="55" y="729" class="static-text detail-text">สถานที่ทำงาน</text>
+  <text x="199" y="729" class="static-text detail-text">: 230 หมู่ที่ 3 ตำบลแม่น้ำคู้ อำเภอปลวกแดง จังหวัดระยอง</text>
+  <text x="55" y="751" class="static-text detail-text">อนุญาตให้ทำงานถึงวันที่</text>
+  <text x="199" y="751" class="static-text detail-text">: 31 มีนาคม 2569</text>
+  
+  <!-- Health Insurance -->
+  <text x="55" y="772" class="static-text info-text">ข้อมูลสิทธิการรักษาพยาบาล</text>
+  <text x="55" y="791" class="static-text detail-text">ประกันสังคม</text>
+  <text x="55" y="813" class="static-text detail-text">ประกันสุขภาพ สิ้นสุดวันที่ 30/09/2025</text>
+  
+  <!-- Conditions -->
+  <text x="55" y="834" class="static-text warning-text">เงื่อนไข</text>
+  <text x="85" y="855" class="static-text condition-text">คนต่างด้าวจะต้องทำประกันสุขภาพตลอดระยะเวลาการอนุญาตให้ทำงาน หากปรากฎว่าระยะเวลาการทำประกันสุขภาพสิ้นสุดลง ก่อนระยะเวลาการอนุญาตให้ทำงาน</text>
+  <text x="55" y="877" class="static-text condition-text">นายทะเบียนจะเพิกถอนใบอนุญาตทำงาน ซึ่งมีผลให้การอนุญาตให้อยู่ในราชอาณาจักรสิ้นสุดลง</text>
+  
+  <!-- Warning -->
+  <text x="55" y="898" class="static-text warning-text">คำเตือน</text>
+  <text x="85" y="919" class="static-text condition-text">เมื่อได้รับอนุญาตให้ทำงานแล้วคนต่างด้าวต้องดำเนินการดังต่อไปนี้ มิเช่นนั้น การอนุญาตให้ทำงานและการอนุญาตให้อยู่ในราชอาณาจักรของคนต่างด้าวจะสิ้นสุดลง</text>
+  <text x="55" y="941" class="static-text condition-text">1. จัดเก็บข้อมูลอัตลักษณ์บุคคล ภายในวันที่ 28 มิถุนายน 2568</text>
+  <text x="55" y="963" class="static-text condition-text">2. จัดทำหรือปรับปรุงทะเบียนประวัติตามกฎหมายว่าด้วยการทะเบียนราษฎร ภายในวันที่ 31 มีนาคม 2569</text>
+  
+  <!-- Profile Picture Placeholder -->
+  <rect x="725" y="46" width="110" height="138" fill="none" stroke="#ccc" stroke-width="1"/>
+  <foreignObject x="725" y="46" width="110" height="138">
+    <img id="svg-profilePic" src="https://via.placeholder.com/110x138?text=No+Image" width="110" height="138" style="object-fit: cover;"/>
+  </foreignObject>
+  
+  <!-- QR Code Placeholder -->
+  <rect x="762.5" y="977" width="69" height="69" fill="none" stroke="#ccc" stroke-width="1"/>
+  <foreignObject x="762.5" y="977" width="69" height="69">
+    <img id="svg-qrCode" src="https://via.placeholder.com/69?text=No+QR" width="69" height="69"/>
+  </foreignObject>
+  
+  <!-- Timestamp -->
+  <text x="55" y="1015" class="static-text timestamp-text" id="svg-timestamp">เอกสารอิเล็กทรอนิกส์ฉบับนี้ถูกสร้างจากระบบอนุญาตทำงานคนต่างด้าวที่มีสถานะการทำงานไม่ถูกต้องตามกฎหมาย ตามมติคณะรัฐมนตรีเมื่อวันที่ 24 กันยายน 2567</text>
+  <text x="55" y="1035" class="static-text timestamp-text">โดยกรมการจัดหางาน กระทรวงแรงงาน</text>
+  <text x="55" y="1055" class="static-text timestamp-text" id="svg-printDate">พิมพ์เอกสาร วันที่ Loading...</text>
+</svg>

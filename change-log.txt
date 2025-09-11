@@ -1,0 +1,364 @@
+=== Change Detection Report - 2025-09-10 22:12:03 ===
+Starting change detection for project: /storage/emulated/0/000update
+
+Project Structure Overview:
+Directories:
+/storage/emulated/0/000update
+/storage/emulated/0/000update/.git
+/storage/emulated/0/000update/.git/hooks
+/storage/emulated/0/000update/.git/info
+/storage/emulated/0/000update/.git/logs
+/storage/emulated/0/000update/.git/objects
+/storage/emulated/0/000update/.git/refs
+/storage/emulated/0/000update/.netlify
+/storage/emulated/0/000update/.netlify/internal
+/storage/emulated/0/000update/main2
+/storage/emulated/0/000update/main3
+/storage/emulated/0/000update/netlify
+/storage/emulated/0/000update/netlify/functions
+/storage/emulated/0/000update/node_modules
+/storage/emulated/0/000update/node_modules/@babel
+/storage/emulated/0/000update/node_modules/@puppeteer
+/storage/emulated/0/000update/node_modules/@tootallnate
+/storage/emulated/0/000update/node_modules/@types
+/storage/emulated/0/000update/node_modules/agent-base
+/storage/emulated/0/000update/node_modules/ansi-regex
+/storage/emulated/0/000update/node_modules/ansi-styles
+/storage/emulated/0/000update/node_modules/argparse
+/storage/emulated/0/000update/node_modules/ast-types
+/storage/emulated/0/000update/node_modules/b4a
+/storage/emulated/0/000update/node_modules/bare-events
+/storage/emulated/0/000update/node_modules/base64-js
+/storage/emulated/0/000update/node_modules/basic-ftp
+/storage/emulated/0/000update/node_modules/buffer
+/storage/emulated/0/000update/node_modules/buffer-crc32
+/storage/emulated/0/000update/node_modules/callsites
+/storage/emulated/0/000update/node_modules/chromium-bidi
+/storage/emulated/0/000update/node_modules/cliui
+/storage/emulated/0/000update/node_modules/color-convert
+/storage/emulated/0/000update/node_modules/color-name
+/storage/emulated/0/000update/node_modules/cosmiconfig
+/storage/emulated/0/000update/node_modules/cross-fetch
+/storage/emulated/0/000update/node_modules/data-uri-to-buffer
+/storage/emulated/0/000update/node_modules/debug
+/storage/emulated/0/000update/node_modules/degenerator
+/storage/emulated/0/000update/node_modules/devtools-protocol
+/storage/emulated/0/000update/node_modules/emoji-regex
+/storage/emulated/0/000update/node_modules/end-of-stream
+/storage/emulated/0/000update/node_modules/env-paths
+/storage/emulated/0/000update/node_modules/error-ex
+/storage/emulated/0/000update/node_modules/escalade
+/storage/emulated/0/000update/node_modules/escodegen
+/storage/emulated/0/000update/node_modules/esprima
+/storage/emulated/0/000update/node_modules/estraverse
+/storage/emulated/0/000update/node_modules/esutils
+/storage/emulated/0/000update/node_modules/extract-zip
+/storage/emulated/0/000update/node_modules/fast-fifo
+/storage/emulated/0/000update/node_modules/fd-slicer
+/storage/emulated/0/000update/node_modules/fetch-blob
+/storage/emulated/0/000update/node_modules/formdata-polyfill
+/storage/emulated/0/000update/node_modules/get-caller-file
+/storage/emulated/0/000update/node_modules/get-stream
+/storage/emulated/0/000update/node_modules/get-uri
+/storage/emulated/0/000update/node_modules/http-proxy-agent
+/storage/emulated/0/000update/node_modules/https-proxy-agent
+/storage/emulated/0/000update/node_modules/ieee754
+/storage/emulated/0/000update/node_modules/import-fresh
+/storage/emulated/0/000update/node_modules/ip-address
+/storage/emulated/0/000update/node_modules/is-arrayish
+/storage/emulated/0/000update/node_modules/is-fullwidth-code-point
+/storage/emulated/0/000update/node_modules/js-tokens
+/storage/emulated/0/000update/node_modules/js-yaml
+/storage/emulated/0/000update/node_modules/json-parse-even-better-errors
+/storage/emulated/0/000update/node_modules/lines-and-columns
+/storage/emulated/0/000update/node_modules/lru-cache
+/storage/emulated/0/000update/node_modules/mitt
+/storage/emulated/0/000update/node_modules/mkdirp-classic
+/storage/emulated/0/000update/node_modules/ms
+/storage/emulated/0/000update/node_modules/netlify-cli
+/storage/emulated/0/000update/node_modules/netmask
+/storage/emulated/0/000update/node_modules/node-domexception
+/storage/emulated/0/000update/node_modules/node-fetch
+/storage/emulated/0/000update/node_modules/once
+/storage/emulated/0/000update/node_modules/pac-proxy-agent
+/storage/emulated/0/000update/node_modules/pac-resolver
+/storage/emulated/0/000update/node_modules/parent-module
+/storage/emulated/0/000update/node_modules/parse-json
+/storage/emulated/0/000update/node_modules/pend
+/storage/emulated/0/000update/node_modules/picocolors
+/storage/emulated/0/000update/node_modules/progress
+/storage/emulated/0/000update/node_modules/proxy-agent
+/storage/emulated/0/000update/node_modules/proxy-from-env
+/storage/emulated/0/000update/node_modules/pump
+/storage/emulated/0/000update/node_modules/puppeteer
+/storage/emulated/0/000update/node_modules/puppeteer-core
+/storage/emulated/0/000update/node_modules/require-directory
+/storage/emulated/0/000update/node_modules/resolve-from
+/storage/emulated/0/000update/node_modules/smart-buffer
+/storage/emulated/0/000update/node_modules/socks
+/storage/emulated/0/000update/node_modules/socks-proxy-agent
+/storage/emulated/0/000update/node_modules/source-map
+/storage/emulated/0/000update/node_modules/streamx
+/storage/emulated/0/000update/node_modules/string-width
+/storage/emulated/0/000update/node_modules/strip-ansi
+/storage/emulated/0/000update/node_modules/tar-fs
+/storage/emulated/0/000update/node_modules/tar-stream
+/storage/emulated/0/000update/node_modules/text-decoder
+/storage/emulated/0/000update/node_modules/through
+/storage/emulated/0/000update/node_modules/tr46
+/storage/emulated/0/000update/node_modules/tslib
+/storage/emulated/0/000update/node_modules/unbzip2-stream
+/storage/emulated/0/000update/node_modules/undici-types
+/storage/emulated/0/000update/node_modules/urlpattern-polyfill
+/storage/emulated/0/000update/node_modules/web-streams-polyfill
+/storage/emulated/0/000update/node_modules/webidl-conversions
+/storage/emulated/0/000update/node_modules/whatwg-url
+/storage/emulated/0/000update/node_modules/wrap-ansi
+/storage/emulated/0/000update/node_modules/wrappy
+/storage/emulated/0/000update/node_modules/ws
+/storage/emulated/0/000update/node_modules/y18n
+/storage/emulated/0/000update/node_modules/yargs
+/storage/emulated/0/000update/node_modules/yargs-parser
+/storage/emulated/0/000update/node_modules/yauzl
+
+Key Files:
+  HTML files: 39
+  SVG files: 8
+  JavaScript files: 6722
+  JSON files: 1567
+
+Checking HTML...
+  MODIFIED: /storage/emulated/0/000update/monitor-dashboard.html (Size: 11216 bytes, Modified: 2025-09-10 22:11:04.098990225 +0700)
+  Total HTML files: 39
+
+Checking SVG...
+  MODIFIED: /storage/emulated/0/000update/complete-page1.svg (Size: 15810 bytes, Modified: 2025-09-10 22:03:35.906990396 +0700)
+  MODIFIED: /storage/emulated/0/000update/complete-page2.svg (Size: 8150 bytes, Modified: 2025-09-10 22:06:47.698990323 +0700)
+  Total SVG files: 8
+
+Checking JavaScript...
+  Total JavaScript files: 6722
+
+Checking JSON...
+  Total JSON files: 1567
+
+Git Activity:
+  Recent commits (last 5):
+95793df เริ่มต้นโปรเจคในเครื่อง
+  Current branch: master
+  Working directory status:
+ M combined-data.json
+ D data.db
+ M index.html
+ M main1.html
+ M netlify.toml
+ M pdf.html
+ M worker.html
+?? README.md
+?? change-log.txt
+?? complete-page1.svg
+?? complete-page2.svg
+?? main1-new.html
+?? main1-svg.html
+?? main3/
+?? monitor-changes.sh
+?? monitor-dashboard.html
+?? netlify/
+?? node_modules/
+?? package.json
+?? page1-template.svg
+?? page2-template.svg
+?? test-complete-svg.html
+?? test-qr.html
+
+File Size Analysis:
+  Large files (> 1MB):
+    /storage/emulated/0/000update/node_modules/devtools-protocol/json/browser_protocol.json ( MB)
+    /storage/emulated/0/000update/node_modules/netlify-cli/npm-shrinkwrap.json ( MB)
+  Total project size: 131M
+
+Change detection complete.
+========================================
+
+=== Change Detection Report - 2025-09-10 22:21:54 ===
+Starting change detection for project: /storage/emulated/0/000update
+
+Project Structure Overview:
+Directories:
+/storage/emulated/0/000update
+/storage/emulated/0/000update/.git
+/storage/emulated/0/000update/.git/hooks
+/storage/emulated/0/000update/.git/info
+/storage/emulated/0/000update/.git/logs
+/storage/emulated/0/000update/.git/objects
+/storage/emulated/0/000update/.git/refs
+/storage/emulated/0/000update/.netlify
+/storage/emulated/0/000update/.netlify/internal
+/storage/emulated/0/000update/main2
+/storage/emulated/0/000update/main3
+/storage/emulated/0/000update/netlify
+/storage/emulated/0/000update/netlify/functions
+/storage/emulated/0/000update/node_modules
+/storage/emulated/0/000update/node_modules/@babel
+/storage/emulated/0/000update/node_modules/@puppeteer
+/storage/emulated/0/000update/node_modules/@tootallnate
+/storage/emulated/0/000update/node_modules/@types
+/storage/emulated/0/000update/node_modules/agent-base
+/storage/emulated/0/000update/node_modules/ansi-regex
+/storage/emulated/0/000update/node_modules/ansi-styles
+/storage/emulated/0/000update/node_modules/argparse
+/storage/emulated/0/000update/node_modules/ast-types
+/storage/emulated/0/000update/node_modules/b4a
+/storage/emulated/0/000update/node_modules/bare-events
+/storage/emulated/0/000update/node_modules/base64-js
+/storage/emulated/0/000update/node_modules/basic-ftp
+/storage/emulated/0/000update/node_modules/buffer
+/storage/emulated/0/000update/node_modules/buffer-crc32
+/storage/emulated/0/000update/node_modules/callsites
+/storage/emulated/0/000update/node_modules/chromium-bidi
+/storage/emulated/0/000update/node_modules/cliui
+/storage/emulated/0/000update/node_modules/color-convert
+/storage/emulated/0/000update/node_modules/color-name
+/storage/emulated/0/000update/node_modules/cosmiconfig
+/storage/emulated/0/000update/node_modules/cross-fetch
+/storage/emulated/0/000update/node_modules/data-uri-to-buffer
+/storage/emulated/0/000update/node_modules/debug
+/storage/emulated/0/000update/node_modules/degenerator
+/storage/emulated/0/000update/node_modules/devtools-protocol
+/storage/emulated/0/000update/node_modules/emoji-regex
+/storage/emulated/0/000update/node_modules/end-of-stream
+/storage/emulated/0/000update/node_modules/env-paths
+/storage/emulated/0/000update/node_modules/error-ex
+/storage/emulated/0/000update/node_modules/escalade
+/storage/emulated/0/000update/node_modules/escodegen
+/storage/emulated/0/000update/node_modules/esprima
+/storage/emulated/0/000update/node_modules/estraverse
+/storage/emulated/0/000update/node_modules/esutils
+/storage/emulated/0/000update/node_modules/extract-zip
+/storage/emulated/0/000update/node_modules/fast-fifo
+/storage/emulated/0/000update/node_modules/fd-slicer
+/storage/emulated/0/000update/node_modules/fetch-blob
+/storage/emulated/0/000update/node_modules/formdata-polyfill
+/storage/emulated/0/000update/node_modules/get-caller-file
+/storage/emulated/0/000update/node_modules/get-stream
+/storage/emulated/0/000update/node_modules/get-uri
+/storage/emulated/0/000update/node_modules/http-proxy-agent
+/storage/emulated/0/000update/node_modules/https-proxy-agent
+/storage/emulated/0/000update/node_modules/ieee754
+/storage/emulated/0/000update/node_modules/import-fresh
+/storage/emulated/0/000update/node_modules/ip-address
+/storage/emulated/0/000update/node_modules/is-arrayish
+/storage/emulated/0/000update/node_modules/is-fullwidth-code-point
+/storage/emulated/0/000update/node_modules/js-tokens
+/storage/emulated/0/000update/node_modules/js-yaml
+/storage/emulated/0/000update/node_modules/json-parse-even-better-errors
+/storage/emulated/0/000update/node_modules/lines-and-columns
+/storage/emulated/0/000update/node_modules/lru-cache
+/storage/emulated/0/000update/node_modules/mitt
+/storage/emulated/0/000update/node_modules/mkdirp-classic
+/storage/emulated/0/000update/node_modules/ms
+/storage/emulated/0/000update/node_modules/netlify-cli
+/storage/emulated/0/000update/node_modules/netmask
+/storage/emulated/0/000update/node_modules/node-domexception
+/storage/emulated/0/000update/node_modules/node-fetch
+/storage/emulated/0/000update/node_modules/once
+/storage/emulated/0/000update/node_modules/pac-proxy-agent
+/storage/emulated/0/000update/node_modules/pac-resolver
+/storage/emulated/0/000update/node_modules/parent-module
+/storage/emulated/0/000update/node_modules/parse-json
+/storage/emulated/0/000update/node_modules/pend
+/storage/emulated/0/000update/node_modules/picocolors
+/storage/emulated/0/000update/node_modules/progress
+/storage/emulated/0/000update/node_modules/proxy-agent
+/storage/emulated/0/000update/node_modules/proxy-from-env
+/storage/emulated/0/000update/node_modules/pump
+/storage/emulated/0/000update/node_modules/puppeteer
+/storage/emulated/0/000update/node_modules/puppeteer-core
+/storage/emulated/0/000update/node_modules/require-directory
+/storage/emulated/0/000update/node_modules/resolve-from
+/storage/emulated/0/000update/node_modules/smart-buffer
+/storage/emulated/0/000update/node_modules/socks
+/storage/emulated/0/000update/node_modules/socks-proxy-agent
+/storage/emulated/0/000update/node_modules/source-map
+/storage/emulated/0/000update/node_modules/streamx
+/storage/emulated/0/000update/node_modules/string-width
+/storage/emulated/0/000update/node_modules/strip-ansi
+/storage/emulated/0/000update/node_modules/tar-fs
+/storage/emulated/0/000update/node_modules/tar-stream
+/storage/emulated/0/000update/node_modules/text-decoder
+/storage/emulated/0/000update/node_modules/through
+/storage/emulated/0/000update/node_modules/tr46
+/storage/emulated/0/000update/node_modules/tslib
+/storage/emulated/0/000update/node_modules/unbzip2-stream
+/storage/emulated/0/000update/node_modules/undici-types
+/storage/emulated/0/000update/node_modules/urlpattern-polyfill
+/storage/emulated/0/000update/node_modules/web-streams-polyfill
+/storage/emulated/0/000update/node_modules/webidl-conversions
+/storage/emulated/0/000update/node_modules/whatwg-url
+/storage/emulated/0/000update/node_modules/wrap-ansi
+/storage/emulated/0/000update/node_modules/wrappy
+/storage/emulated/0/000update/node_modules/ws
+/storage/emulated/0/000update/node_modules/y18n
+/storage/emulated/0/000update/node_modules/yargs
+/storage/emulated/0/000update/node_modules/yargs-parser
+/storage/emulated/0/000update/node_modules/yauzl
+
+Key Files:
+  HTML files: 40
+  SVG files: 8
+  JavaScript files: 6722
+  JSON files: 1567
+
+Checking HTML...
+  MODIFIED: /storage/emulated/0/000update/netlify/index.html (Size: 9574 bytes, Modified: 2025-09-10 22:21:00.646989997 +0700)
+  Total HTML files: 40
+
+Checking SVG...
+  Total SVG files: 8
+
+Checking JavaScript...
+  Total JavaScript files: 6722
+
+Checking JSON...
+  Total JSON files: 1567
+
+Git Activity:
+  Recent commits (last 5):
+95793df เริ่มต้นโปรเจคในเครื่อง
+  Current branch: master
+  Working directory status:
+ M combined-data.json
+ D data.db
+ M index.html
+ M main1.html
+ M netlify.toml
+ M pdf.html
+ M worker.html
+?? DEPLOYMENT_CHECKLIST.md
+?? PROJECT_SUMMARY.md
+?? README.md
+?? change-log.txt
+?? complete-page1.svg
+?? complete-page2.svg
+?? main1-new.html
+?? main1-svg.html
+?? main3/
+?? monitor-changes.sh
+?? monitor-dashboard.html
+?? netlify/
+?? node_modules/
+?? package.json
+?? page1-template.svg
+?? page2-template.svg
+?? test-complete-svg.html
+?? test-qr.html
+
+File Size Analysis:
+  Large files (> 1MB):
+    /storage/emulated/0/000update/node_modules/devtools-protocol/json/browser_protocol.json ( MB)
+    /storage/emulated/0/000update/node_modules/netlify-cli/npm-shrinkwrap.json ( MB)
+  Total project size: 132M
+
+Change detection complete.
+========================================
+
