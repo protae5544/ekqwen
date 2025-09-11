@@ -439,6 +439,8 @@
         const svgElement = svgDoc.querySelector('svg');
 
         // Shift all text elements down by one line (as you originally implemented)
+        // Apply shift multiple times to ensure it works
+        shiftTextElementsDown(svgElement);
         shiftTextElementsDown(svgElement);
 
         // Serialize the modified SVG back to a string
