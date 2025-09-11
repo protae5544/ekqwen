@@ -1,7 +1,7 @@
 {
   "name": "worker-permit-system",
-  "version": "1.0.0",
-  "description": "Worker permit system with PDF download via QR code",
+  "version": "2.0.0",
+  "description": "Foreign Worker Management System with SVG Templates and Admin Panel",
   "main": "index.js",
   "scripts": {
     "build": "echo 'Static site - no build needed'",
@@ -9,8 +9,8 @@
     "start": "netlify dev"
   },
   "dependencies": {
-    "fs": "^0.0.1-security",
-    "path": "^0.12.7"
+    "puppeteer": "^21.0.0",
+    "node-fetch": "^3.3.0"
   },
   "devDependencies": {
     "netlify-cli": "^17.0.0"

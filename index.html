@@ -3,34 +3,281 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>หน้าแรก</title>
+    <title>Foreign Worker Management System - ระบบจัดการคนต่างด้าว</title>
     <style>
-        body {
+        @font-face {
+            font-family: 'THSarabunPsk';
+            src: url('https://oldqifkvaagtseibueaf.supabase.co/storage/v1/object/public/zzoo/ozz/ss-thsbn.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            unicode-range: U+0E00-0E7F, U+0020-007F, U+00A0-00FF;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'THSarabunPsk';
+            src: url('https://oldqifkvaagtseibueaf.supabase.co/storage/v1/object/public/zzoo/ozz/ss-thsbn-bold.woff2') format('woff2');
+            font-weight: bold;
+            font-style: normal;
+            unicode-range: U+0E00-0E7F, U+0020-007F, U+00A0-00FF;
+            font-display: swap;
+        }
+        
+        * {
             margin: 0;
             padding: 0;
-            height: 100vh;
-            background-color: white;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'THSarabunPsk', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        
+        .status {
+            display: inline-block;
+            background: #27ae60;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .card h3 {
+            font-size: 1.5em;
+            color: #2c3e50;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-family: Arial, sans-serif;
+            gap: 10px;
         }
-        .links { text-align: center; }
-        a {
-            color: black;
+        
+        .card .description {
+            color: #7f8c8d;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .card .features {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+        
+        .card .features li {
+            padding: 5px 0;
+            border-bottom: 1px solid #ecf0f1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .card .features li:last-child {
+            border-bottom: none;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
             text-decoration: none;
-            font-size: 18px;
-            display: block;
-            margin: 10px 0;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            margin-bottom: 10px;
         }
-        a:hover { text-decoration: underline; }
+        
+        .btn:hover {
+            background: linear-gradient(135deg, #2980b9, #21618c);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn.success {
+            background: linear-gradient(135deg, #27ae60, #229954);
+        }
+        
+        .btn.success:hover {
+            background: linear-gradient(135deg, #229954, #1e8449);
+        }
+        
+        .btn.warning {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+        
+        .btn.warning:hover {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+        }
+        
+        .btn.danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+        
+        .btn.danger:hover {
+            background: linear-gradient(135deg, #c0392b, #a93226);
+        }
+        
+        .icon {
+            font-size: 1.2em;
+        }
+        
+        .footer {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .footer p {
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn {
+                display: block;
+                margin-bottom: 10px;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="links">
-        <a href="main1.html">คลิก 1</a>
-        <a href="main2/main2.html">คลิก 2</a>
-        <a href="main3/main3.html">คลิก 3</a>
+    <div class="container">
+        <div class="header">
+            <h1>🏢 Foreign Worker Management System</h1>
+            <p>ระบบจัดการคนต่างด้าวและเอกสารใบอนุญาตทำงาน</p>
+            <span class="status">🚀 Production Ready</span>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h3><span class="icon">📄</span> Production System</h3>
+                <p class="description">ระบบหลักสำหรับใช้งานจริง ดึงข้อมูลจาก JSON และสร้างเอกสารด้วย SVG Template</p>
+                <ul class="features">
+                    <li>✅ SVG Template System</li>
+                    <li>✅ Dynamic Data Binding</li>
+                    <li>✅ Thai Font Support</li>
+                    <li>✅ QR Code Generation</li>
+                    <li>✅ Professional Layout</li>
+                </ul>
+                <a href="main1-svg.html" class="btn success">🚀 Main Application</a>
+                <a href="main1.html" class="btn">📝 Original Version</a>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">👨‍💼</span> Admin Panel</h3>
+                <p class="description">หน้าจอจัดการสำหรับแอดมิน - ค้นหา ดาวน์โหลด และจัดการ PDF ทั้งหมด</p>
+                <ul class="features">
+                    <li>🔍 ค้นหาด้วย Session / ชื่อ</li>
+                    <li>🖼️ แสดงรูปโปรไฟล์ + ชื่อ</li>
+                    <li>👆 กดค้างเลือกหลายรายการ</li>
+                    <li>📥 ดาวน์โหลดเป็นชื่อผู้ใช้</li>
+                    <li>👀 ตัวอย่าง PDF 2 หน้าพร้อมกัน</li>
+                </ul>
+                <a href="admin-pdf-manager.html" class="btn warning">👨‍💼 Admin Panel</a>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">🔧</span> Testing & Reference</h3>
+                <p class="description">เวอร์ชันทดสอบและไฟล์อ้างอิงสำหรับการตรวจสอบและพัฒนา</p>
+                <ul class="features">
+                    <li>📄 PDF Generation Test</li>
+                    <li>👤 Worker Data Display</li>
+                    <li>🔍 QR Code Testing</li>
+                    <li>📋 Reference Templates</li>
+                </ul>
+                <a href="pdf.html" class="btn">📄 PDF Test</a>
+                <a href="worker.html" class="btn">👤 Worker Data</a>
+                <a href="main2/main2.html" class="btn">📋 Reference</a>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">🚀</span> Deployment</h3>
+                <p class="description">เตรียมพร้อมสำหรับการ Deploy ขึ้น Netlify และการใช้งานจริง</p>
+                <ul class="features">
+                    <li>☁️ Netlify Functions Ready</li>
+                    <li>📄 PDF Generation</li>
+                    <li>🔗 QR Code Links</li>
+                    <li>📱 Mobile Compatible</li>
+                </ul>
+                <a href="netlify/index.html" class="btn success">☁️ Netlify Config</a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Foreign Worker Management System</strong> - SVG Template Edition</p>
+            <p>Developed with ❤️ using HTML5, SVG Templates, and Thai Typography</p>
+            <p>📅 Last Updated: <span id="lastUpdated">Loading...</span></p>
+        </div>
     </div>
+
+    <script>
+        // Update timestamp
+        document.getElementById('lastUpdated').textContent = new Date().toLocaleString('th-TH');
+    </script>
 </body>
 </html>
