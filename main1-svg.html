@@ -95,6 +95,15 @@
       }
     }
     
+    // Function to shift all <text> elements in the SVG down by one line (17px)
+    function shiftTextElementsDown(svgElement) {
+      const textElements = svgElement.querySelectorAll('text');
+      textElements.forEach(text => {
+        const currentY = parseFloat(text.getAttribute('y')) || 0;
+        text.setAttribute('y', currentY + 17); // Shift down by 17px (one line height)
+      });
+    }
+
     function getCurrentTimestamp() {
       const now = new Date();
       const thaiDate = now.toLocaleString('th-TH', {
@@ -414,9 +423,70 @@
       }
     }
     
+    // Load SVG templates using the original method you provided
+    async function loadSVGTemplates() {
+      try {
+        // Load Page 1 SVG
+        const page1Response = await fetch('complete-page1.svg');
+        const page1SVG = await page1Response.text();
+        document.getElementById('page1-div').innerHTML = page1SVG;
+
+        // Load Page 2 SVG and adjust text positions
+        const page2Response = await fetch('complete-page2.svg');
+        const page2SVG = await page2Response.text();
+        const parser = new DOMParser();
+        const svgDoc = parser.parseFromString(page2SVG, 'image/svg+xml');
+        const svgElement = svgDoc.querySelector('svg');
+
+        // Shift all text elements down by one line (as you originally implemented)
+        shiftTextElementsDown(svgElement);
+
+        // Serialize the modified SVG back to a string
+        const serializer = new XMLSerializer();
+        const modifiedPage2SVG = serializer.serializeToString(svgElement);
+        document.getElementById('page2-div').innerHTML = modifiedPage2SVG;
+
+        console.log('Complete SVG templates loaded successfully, Page 2 text shifted down by 17px');
+      } catch (error) {
+        console.error('Error loading complete SVG templates:', error);
+        // Fallback to original templates
+        loadOriginalTemplates();
+      }
+    }
+
+    function loadOriginalTemplates() {
+      console.log('Loading original SVG templates as fallback');
+      fetch('page1-template.svg')
+        .then(response => response.text())
+        .then(svg => {
+          document.getElementById('page1-div').innerHTML = svg;
+          return fetch('page2-template.svg');
+        })
+        .then(response => response.text())
+        .then(svg => {
+          const parser = new DOMParser();
+          const svgDoc = parser.parseFromString(svg, 'image/svg+xml');
+          const svgElement = svgDoc.querySelector('svg');
+
+          // Shift all text elements down by one line for fallback template
+          shiftTextElementsDown(svgElement);
+
+          // Serialize the modified SVG back to a string
+          const serializer = new XMLSerializer();
+          const modifiedPage2SVG = serializer.serializeToString(svgDoc);
+          document.getElementById('page2-div').innerHTML = modifiedPage2SVG;
+
+          console.log('Original SVG templates loaded as fallback, Page 2 text shifted down by 17px');
+        })
+        .catch(error => {
+          console.error('Error loading fallback templates:', error);
+        });
+    }
+
     // Initialize when page loads
     window.onload = function() {
       try {
+        loadSVGTemplates(); // Load and shift SVG templates
         loadWorkerData();
       } catch (error) {
         console.error('Error during initialization:', error);
@@ -446,49 +516,62 @@
   </div>
 
   <script>
-    // Load SVG templates
-    async function loadSVGTemplates() {
-      try {
-        // Load Page 1 SVG
-        const page1Response = await fetch('complete-page1.svg');
-        const page1SVG = await page1Response.text();
-        document.getElementById('page1-div').innerHTML = page1SVG;
-        
-        // Load Page 2 SVG
-        const page2Response = await fetch('complete-page2.svg');
-        const page2SVG = await page2Response.text();
-        document.getElementById('page2-div').innerHTML = page2SVG;
-        
-        console.log('Complete SVG templates loaded successfully');
-      } catch (error) {
-        console.error('Error loading complete SVG templates:', error);
-        // Fallback to original templates
-        loadOriginalTemplates();
-      }
+  // เลื่อนข้อความลง 17px
+  function shiftTextElementsDown(svgElement) {
+    svgElement.querySelectorAll('text').forEach(text => {
+      const y = parseFloat(text.getAttribute('y')) || 0;
+      text.setAttribute('y', y + 17);
+    });
+  }
+
+  // โหลด SVG
+  async function loadSVGTemplates() {
+    try {
+      // หน้า 1
+      const page1 = await fetch('complete-page1.svg').then(res => res.text());
+      document.getElementById('page1-div').innerHTML = page1;
+
+      // หน้า 2
+      const page2 = await fetch('complete-page2.svg').then(res => res.text());
+      const parser = new DOMParser();
+      const svgDoc = parser.parseFromString(page2, 'image/svg+xml');
+      const svg = svgDoc.querySelector('svg');
+      if (!svg) throw new Error('SVG หน้า 2 ไม่ถูกต้อง');
+
+      shiftTextElementsDown(svg);
+
+      const serializer = new XMLSerializer();
+      document.getElementById('page2-div').innerHTML = serializer.serializeToString(svgDoc);
+    } catch (error) {
+      console.error('โหลด SVG ล้มเหลว:', error);
+      loadOriginalTemplates();
     }
-    
-    function loadOriginalTemplates() {
-      console.log('Loading original SVG templates as fallback');
-      // Load original templates if complete ones fail
-      fetch('page1-template.svg')
-        .then(response => response.text())
-        .then(svg => {
-          document.getElementById('page1-div').innerHTML = svg;
-          return fetch('page2-template.svg');
-        })
-        .then(response => response.text())
-        .then(svg => {
-          document.getElementById('page2-div').innerHTML = svg;
-          console.log('Original SVG templates loaded as fallback');
-        })
-        .catch(error => {
-          console.error('Error loading fallback templates:', error);
-        });
+  }
+
+  // โหลด SVG สำรอง
+  async function loadOriginalTemplates() {
+    try {
+      const page1 = await fetch('page1-template.svg').then(res => res.text());
+      document.getElementById('page1-div').innerHTML = page1;
+
+      const page2 = await fetch('page2-template.svg').then(res => res.text());
+      const parser = new DOMParser();
+      const svgDoc = parser.parseFromString(page2, 'image/svg+xml');
+      const svg = svgDoc.querySelector('svg');
+      if (!svg) throw new Error('SVG สำรองหน้า 2 ไม่ถูกต้อง');
+
+      shiftTextElementsDown(svg);
+
+      const serializer = new XMLSerializer();
+      document.getElementById('page2-div').innerHTML = serializer.serializeToString(svgDoc);
+    } catch (error) {
+      console.error('โหลด SVG สำรองล้มเหลว:', error);
+      document.body.insertAdjacentHTML('afterbegin', '<div class="text-red-500 text-center mt-5 p-2 bg-red-100 border border-red-500 rounded">เกิดข้อผิดพลาดในการโหลด SVG</div>');
     }
-    
-    // Load SVG templates when page loads
-    window.addEventListener('load', loadSVGTemplates);
-  </script>
+  }
+
+  window.addEventListener('load', loadSVGTemplates);
+</script>
   
   <!-- PDF Generator -->
   <script src="js/pdf-generator.js"></script>
